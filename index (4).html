@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<title>Chunk City — The City of Gold · Ganderbal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link rel="dns-prefetch" href="https://images.unsplash.com"/>
+<link rel="dns-prefetch" href="https://images.pexels.com"/>
+<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'"/>
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/></noscript>
+<script src="images.js"></script>
+<style>
+:root{--bg:#060608;--bg2:#0E0E12;--bg3:#161619;--bg4:#1E1E23;--gold:#C8951A;--gold2:#E8B84B;--gold3:#F5D080;--ember:#D4411C;--cream:#F0E6CC;--muted:#5E5E6E;--border:rgba(200,149,26,.15);--border2:rgba(200,149,26,.08);--r:16px;--r2:24px;--glow:0 0 40px rgba(200,149,26,.25);--shadow:0 30px 80px rgba(0,0,0,.7)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--cream);font-family:'DM Sans',sans-serif;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+img{display:block;max-width:100%}
+button,input,textarea,select{font-family:inherit}
+::selection{background:var(--gold);color:#000}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg2)}::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px}
+
+/* PRELOADER */
+#pre{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;transition:opacity .7s .3s,visibility .7s .3s}
+#pre.done{opacity:0;visibility:hidden}
+.pre-ring{width:70px;height:70px;border-radius:50%;border:2px solid var(--border);border-top:2px solid var(--gold2);animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pre-ring::after{content:'';position:absolute;inset:8px;border-radius:50%;border:2px solid var(--border2);border-bottom:2px solid var(--gold);animation:spin 1.5s linear infinite reverse;position:relative;display:block}
+.pre-t{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:8px;color:var(--gold2)}
+.pre-s{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--muted)}
+.pre-bar{width:160px;height:2px;background:var(--bg3);border-radius:1px;overflow:hidden}
+.pre-fill{height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--gold2));animation:pfill .8s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes pfill{to{width:100%}}
+
+/* CANVAS */
+#cvs{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.45}
+
+/* NAV */
+nav{position:fixed;inset:0 0 auto 0;z-index:800;height:66px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;transition:all .4s}
+nav.scrolled{background:rgba(6,6,8,.93);backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;gap:11px;text-decoration:none}
+.li{width:40px;height:40px;background:linear-gradient(135deg,var(--gold),var(--gold2));border-radius:9px;display:grid;place-items:center;font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--cream);letter-spacing:1px;box-shadow:0 4px 18px rgba(200,149,26,.3);flex-shrink:0}
+.ln{font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:3px;line-height:1.1}
+.lc{display:block;font-size:9px;letter-spacing:4px;color:var(--gold2);font-family:'DM Sans',sans-serif;font-weight:600}
+.nav-links{display:flex;align-items:center;list-style:none;gap:28px}
+.nav-links a{text-decoration:none;color:var(--muted);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;transition:color .3s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1px;background:var(--gold2);transition:width .3s}
+.nav-links a:hover{color:var(--cream)}.nav-links a:hover::after{width:100%}
+.nav-end{display:flex;align-items:center;gap:10px}
+.btn-t{display:flex;align-items:center;gap:7px;padding:9px 16px;border-radius:50px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border:1px solid var(--border);background:transparent;color:var(--gold2);cursor:pointer;transition:all .3s;white-space:nowrap}
+.btn-t:hover{background:rgba(200,149,26,.1);border-color:var(--gold)}
+.cpill{display:flex;align-items:center;gap:7px;padding:9px 16px;border-radius:50px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000;border:none;cursor:pointer;transition:all .3s;white-space:nowrap}
+.cpill:hover{transform:scale(1.04);box-shadow:var(--glow)}
+.cbadge{background:#000;color:var(--gold2);border-radius:50%;width:18px;height:18px;font-size:9px;font-weight:800;display:grid;place-items:center}
+.ham{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:6px;background:none;border:none}
+.ham span{display:block;width:22px;height:1.5px;background:var(--cream);transition:all .3s;border-radius:1px}
+.ham.open span:nth-child(1){transform:rotate(45deg) translate(4px,4px)}
+.ham.open span:nth-child(2){opacity:0}
+.ham.open span:nth-child(3){transform:rotate(-45deg) translate(4px,-4px)}
+@media(max-width:768px){
+  .nav-links{display:none;position:fixed;top:66px;inset:66px 0 0 0;background:rgba(6,6,8,.98);backdrop-filter:blur(30px);flex-direction:column;justify-content:center;align-items:center;gap:32px}
+  .nav-links.open{display:flex}
+  .nav-links a{font-size:20px}
+  .btn-t{display:none}
+  .ham{display:flex}
+}
+
+/* HERO */
+.hero{min-height:100svh;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.hbg{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1800&q=90') center/cover no-repeat;animation:hz 25s ease-in-out infinite alternate;filter:brightness(.18)}
+@keyframes hz{0%{transform:scale(1.05)}100%{transform:scale(1.15) translate(-2%,-1%)}}
+.hgrad{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 60%,rgba(200,149,26,.06),transparent 70%),linear-gradient(to bottom,rgba(6,6,8,.3),rgba(6,6,8,.5) 60%,var(--bg) 100%)}
+.hc{position:relative;z-index:2;text-align:center;padding:0 24px;max-width:840px}
+.h-badge{display:inline-flex;align-items:center;gap:9px;padding:7px 18px;background:rgba(200,149,26,.1);border:1px solid rgba(200,149,26,.3);border-radius:50px;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold2);margin-bottom:26px;animation:fu .8s ease both}
+.htitle{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,12vw,130px);font-weight:700;line-height:.9;margin-bottom:8px;animation:fu .8s ease .15s both}
+.htitle em{display:block;color:var(--gold2);font-style:italic;font-weight:300}
+.hdiv{display:flex;align-items:center;justify-content:center;gap:14px;margin:22px 0;animation:fu .8s ease .25s both}
+.hdiv span{width:55px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.hdiv i{color:var(--gold);font-size:11px}
+.hsub{font-size:14px;color:rgba(240,230,204,.65);max-width:420px;margin:0 auto 36px;line-height:1.8;font-weight:300;animation:fu .8s ease .35s both}
+.hbtns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;animation:fu .8s ease .45s both}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:50px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border:none;transition:all .35s;text-decoration:none;font-family:'DM Sans',sans-serif}
+.bg{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000;box-shadow:0 8px 28px rgba(200,149,26,.35)}
+.bg:hover{transform:translateY(-3px);box-shadow:0 14px 45px rgba(200,149,26,.55)}
+.bo{background:rgba(240,230,204,.06);border:1px solid rgba(240,230,204,.2);color:var(--cream)}
+.bo:hover{border-color:var(--gold2);color:var(--gold2);background:rgba(200,149,26,.08)}
+.hstats{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;gap:36px;z-index:2;animation:fu .8s ease .6s both}
+.hs-n{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--gold2);letter-spacing:1px;line-height:1;text-align:center}
+.hs-l{font-size:8px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:2px;text-align:center}
+@keyframes fu{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+/* STRIP */
+.strip{background:linear-gradient(90deg,var(--gold),var(--gold2) 50%,var(--gold));overflow:hidden;height:42px;display:flex;align-items:center}
+.strip-track{display:flex;gap:56px;animation:sm 18s linear infinite;white-space:nowrap;align-items:center}
+.si{display:flex;align-items:center;gap:9px;font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:#000;flex-shrink:0}
+.si i{font-size:12px}
+@keyframes sm{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* MENU */
+.mwrap{background:var(--bg2);padding:90px 0}
+.minner{max-width:1300px;margin:0 auto;padding:0 28px}
+.mhead{text-align:center;margin-bottom:50px}
+.tag{display:inline-flex;align-items:center;gap:10px;font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--gold2);margin-bottom:12px}
+.tag::before{content:'';width:28px;height:1px;background:var(--gold)}
+.h2{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,5vw,60px);font-weight:700;line-height:1.05;margin-bottom:14px}
+.h2 em{color:var(--gold2);font-style:italic}
+.lead{font-size:14px;color:var(--muted);line-height:1.8;max-width:460px;font-weight:300}
+.cats{display:flex;gap:9px;overflow-x:auto;padding:4px 0 18px;scrollbar-width:none;-webkit-overflow-scrolling:touch;margin-bottom:44px}
+.cats::-webkit-scrollbar{display:none}
+.cat{flex-shrink:0;display:flex;align-items:center;gap:7px;padding:9px 18px;border-radius:50px;border:1px solid var(--border2);background:transparent;color:var(--muted);font-size:11px;font-weight:600;letter-spacing:1px;cursor:pointer;transition:all .3s}
+.cat i{font-size:12px}
+.cat.on,.cat:hover{background:linear-gradient(135deg,var(--gold),var(--gold2));border-color:transparent;color:#000;box-shadow:0 5px 20px rgba(200,149,26,.3)}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:20px}
+.mc{background:var(--bg3);border-radius:var(--r2);overflow:hidden;border:1px solid var(--border2);transition:all .4s;position:relative}
+.mc:hover{transform:translateY(-7px);border-color:rgba(200,149,26,.22);box-shadow:0 22px 55px rgba(0,0,0,.5),var(--glow)}
+.mc-iw{position:relative;height:180px;overflow:hidden}
+.mc-img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.4,0,.2,1)}
+.mc:hover .mc-img{transform:scale(1.07)}
+.mc-tag{position:absolute;top:11px;left:11px;background:rgba(6,6,8,.82);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:18px;padding:3px 11px;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold2)}
+.mc-body{padding:17px}
+.mc-name{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;line-height:1.2;margin-bottom:5px}
+.mc-desc{font-size:11px;color:var(--muted);line-height:1.5;margin-bottom:14px;font-weight:300}
+.mc-foot{display:flex;align-items:center;justify-content:space-between}
+.mc-price{font-family:'Bebas Neue',sans-serif;font-size:21px;letter-spacing:1px}
+.add{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--gold),var(--gold2));border:none;color:#000;font-size:14px;display:grid;place-items:center;cursor:pointer;transition:all .3s;flex-shrink:0}
+.add:hover{transform:scale(1.1);box-shadow:0 5px 18px rgba(200,149,26,.4)}
+.add.done{background:linear-gradient(135deg,#1a7a4a,#22c870);color:#fff}
+
+/* REVIEWS */
+.rwrap{background:var(--bg);padding:90px 0 80px;overflow:hidden}
+.rinner{max-width:1300px;margin:0 auto;padding:0 28px}
+.rhead{text-align:center;margin-bottom:48px}
+.rvp{overflow:hidden;margin:0 -4px;position:relative;cursor:grab;user-select:none}
+.rvp:active{cursor:grabbing}
+.rvp::before,.rvp::after{content:'';position:absolute;top:0;bottom:0;width:50px;z-index:2;pointer-events:none}
+.rvp::before{left:0;background:linear-gradient(to right,var(--bg),transparent)}
+.rvp::after{right:0;background:linear-gradient(to left,var(--bg),transparent)}
+.rvtrack{display:flex;gap:18px;transition:transform .5s cubic-bezier(.4,0,.2,1);padding:8px 4px;will-change:transform}
+.rvcard{flex:0 0 330px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r2);padding:26px;transition:border-color .3s,box-shadow .3s;overflow:hidden}
+@media(max-width:700px){.rvcard{flex:0 0 calc(100vw - 72px)}}
+@media(min-width:701px) and (max-width:1060px){.rvcard{flex:0 0 290px}}
+.rvcard:hover{border-color:rgba(200,149,26,.18);box-shadow:0 18px 45px rgba(0,0,0,.4)}
+.rvtop{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.rvav{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:grid;place-items:center;font-weight:800;font-size:16px;color:#000;flex-shrink:0}
+.rvi{flex:1}
+.rvn{font-size:13px;font-weight:700}
+.rvt{font-size:10px;color:var(--muted);margin-top:1px}
+.rvs{display:flex;gap:2px}
+.rvs i{color:var(--gold2);font-size:10px}
+.rvq{font-family:'Cormorant Garamond',serif;font-size:44px;color:var(--gold);opacity:.2;line-height:.7;margin-bottom:8px}
+.rvtxt{font-size:12px;color:rgba(240,230,204,.75);line-height:1.75;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;font-weight:300}
+.rvctrls{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:34px}
+.rvarr{width:42px;height:42px;border-radius:50%;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-size:13px;display:grid;place-items:center;transition:all .3s}
+.rvarr:hover{border-color:var(--gold);color:var(--gold);background:rgba(200,149,26,.08)}
+.rvdots{display:flex;gap:5px;align-items:center}
+.rvd{width:5px;height:5px;border-radius:3px;background:var(--bg4);cursor:pointer;transition:all .35s}
+.rvd.on{background:var(--gold2);width:18px}
+
+/* ABOUT */
+.awrap{background:var(--bg2);padding:100px 28px}
+.agrid{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
+.avis{position:relative;height:500px}
+.ai1{position:absolute;top:0;left:0;width:70%;height:390px;object-fit:cover;border-radius:var(--r2);box-shadow:var(--shadow)}
+.ai2{position:absolute;bottom:0;right:0;width:50%;height:265px;object-fit:cover;border-radius:var(--r2);box-shadow:var(--shadow);border:3px solid var(--bg2)}
+.ab{position:absolute;top:50%;left:58%;transform:translate(-50%,-50%);width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 10px 36px rgba(200,149,26,.5);z-index:2}
+.ab span:first-child{font-family:'Bebas Neue',sans-serif;font-size:24px;color:#000;line-height:1}
+.ab span:last-child{font-size:7px;font-weight:800;color:rgba(0,0,0,.6);letter-spacing:1px;text-transform:uppercase;text-align:center}
+.feats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:36px}
+.feat{display:flex;gap:12px;padding:16px;background:var(--bg3);border-radius:12px;border:1px solid var(--border2);transition:all .3s}
+.feat:hover{border-color:rgba(200,149,26,.2);transform:translateX(4px)}
+.fic{width:40px;height:40px;border-radius:9px;background:rgba(200,149,26,.1);display:grid;place-items:center;color:var(--gold2);font-size:16px;flex-shrink:0}
+.feat h4{font-size:12px;font-weight:700;margin-bottom:2px}
+.feat p{font-size:11px;color:var(--muted);line-height:1.4}
+@media(max-width:820px){.agrid{grid-template-columns:1fr}.avis{height:280px}.ai1{width:78%;height:210px}.ai2{width:52%;height:160px}}
+
+/* BOOK TABLE INLINE */
+.bwrap{background:var(--bg2);padding:0 28px 100px}
+.binner{max-width:1300px;margin:0 auto;background:var(--bg3);border-radius:var(--r2);border:1px solid var(--border);overflow:hidden;display:grid;grid-template-columns:1fr 1.15fr}
+.bleft{padding:56px;background:linear-gradient(135deg,rgba(200,149,26,.1),rgba(200,149,26,.03));border-right:1px solid var(--border)}
+.bright{padding:56px}
+.bimgs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:28px}
+.bimgs img{border-radius:12px;height:130px;width:100%;object-fit:cover}
+.bform{display:flex;flex-direction:column;gap:14px}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fg{display:flex;flex-direction:column;gap:6px}
+.fg label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold2)}
+.fi{background:var(--bg4);border:1px solid var(--border2);border-radius:9px;padding:12px 14px;color:var(--cream);font-size:13px;outline:none;transition:border-color .3s;width:100%}
+.fi:focus{border-color:var(--gold)}
+.fi::placeholder{color:var(--muted)}
+select.fi option{background:var(--bg3)}
+@media(max-width:820px){.binner{grid-template-columns:1fr}.bleft,.bright{padding:36px}.frow{grid-template-columns:1fr}}
+@media(max-width:480px){.bleft,.bright{padding:24px}}
+
+/* LOCATION */
+.lwrap{background:var(--bg);padding:100px 28px}
+.lgrid{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1fr 1.2fr;gap:56px;align-items:start}
+.lcards{display:flex;flex-direction:column;gap:14px}
+.lcard{display:flex;gap:16px;padding:20px;background:var(--bg3);border-radius:var(--r);border:1px solid var(--border2);transition:all .35s;align-items:flex-start}
+.lcard:hover{border-color:rgba(200,149,26,.22);transform:translateX(5px);box-shadow:0 8px 36px rgba(0,0,0,.3)}
+.lic{width:48px;height:48px;border-radius:11px;background:linear-gradient(135deg,var(--gold),var(--gold2));display:grid;place-items:center;color:#000;font-size:18px;flex-shrink:0;box-shadow:0 5px 18px rgba(200,149,26,.28)}
+.llbl{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold2);margin-bottom:3px}
+.lval{font-size:14px;font-weight:600;margin-bottom:2px}
+.lsub{font-size:12px;color:var(--muted)}
+.mbox{border-radius:var(--r2);overflow:hidden;border:1px solid var(--border);height:450px;box-shadow:var(--shadow)}
+.mbox iframe{width:100%;height:100%;filter:grayscale(30%) invert(88%) hue-rotate(175deg) saturate(.65) brightness(.82);border:0;display:block}
+@media(max-width:820px){.lgrid{grid-template-columns:1fr}.mbox{height:300px}}
+
+/* FOOTER */
+footer{background:#030305;padding:66px 28px 28px;border-top:1px solid var(--border2)}
+.finner{max-width:1300px;margin:0 auto}
+.ftop{display:grid;grid-template-columns:2fr 1fr 1fr;gap:56px;margin-bottom:56px}
+.fbrand p{font-size:13px;color:var(--muted);line-height:1.8;margin-top:13px;max-width:270px}
+.fsocs{display:flex;gap:9px;margin-top:20px}
+.fsoc{width:36px;height:36px;border-radius:8px;border:1px solid var(--border2);display:grid;place-items:center;color:var(--muted);text-decoration:none;transition:all .3s;font-size:14px}
+.fsoc:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px)}
+.fcol h4{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold2);margin-bottom:18px}
+.fcol ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+.fcol ul a{text-decoration:none;color:var(--muted);font-size:13px;transition:color .3s;display:flex;align-items:center;gap:7px}
+.fcol ul a:hover{color:var(--cream)}
+.fcol ul a i{font-size:10px;color:var(--gold)}
+.fbot{border-top:1px solid var(--border2);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.fcopy{font-size:11px;color:var(--muted)}
+.fcopy b{color:var(--gold2)}
+@media(max-width:700px){.ftop{grid-template-columns:1fr;gap:36px}}
+
+/* CART DRAWER */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:900;opacity:0;visibility:hidden;transition:all .3s;backdrop-filter:blur(6px)}
+.ov.on{opacity:1;visibility:visible}
+.drawer{position:fixed;top:0;right:0;width:415px;max-width:100vw;height:100dvh;background:var(--bg2);z-index:901;display:flex;flex-direction:column;transform:translateX(110%);transition:transform .4s cubic-bezier(.4,0,.2,1);border-left:1px solid var(--border)}
+.drawer.on{transform:translateX(0)}
+.dh{padding:20px 22px;border-bottom:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.dtitle{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:700;display:flex;align-items:center;gap:9px}
+.dtitle i{color:var(--gold)}
+.cx{width:32px;height:32px;border-radius:7px;border:1px solid var(--border2);background:transparent;color:var(--muted);cursor:pointer;font-size:13px;display:grid;place-items:center;transition:all .3s}
+.cx:hover{border-color:var(--ember);color:var(--ember)}
+.dbody{flex:1;overflow-y:auto;padding:18px}
+.es{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:12px;color:var(--muted)}
+.es i{font-size:36px;opacity:.2}
+.es p{font-size:13px;text-align:center;line-height:1.6}
+.ci{display:flex;gap:11px;background:var(--bg3);border-radius:11px;padding:11px;border:1px solid var(--border2);align-items:center;animation:si .3s ease}
+@keyframes si{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:translateX(0)}}
+.cit{width:52px;height:52px;border-radius:8px;object-fit:cover;flex-shrink:0}
+.cid{flex:1;min-width:0}
+.cin{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px}
+.cip{font-size:13px;color:var(--gold2);font-family:'Bebas Neue',sans-serif;letter-spacing:.5px}
+.ciq{display:flex;align-items:center;gap:7px;flex-shrink:0}
+.qb{width:25px;height:25px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--cream);cursor:pointer;font-size:11px;display:grid;place-items:center;transition:all .2s}
+.qb:hover{border-color:var(--gold);color:var(--gold)}
+.qn{font-size:13px;font-weight:700;min-width:16px;text-align:center}
+.dfoot{flex-shrink:0;padding:18px 22px;border-top:1px solid var(--border2)}
+.osect{margin-bottom:14px}
+.ostitle{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold2);margin-bottom:10px;display:flex;align-items:center;gap:7px}
+.ostitle::after{content:'';flex:1;height:1px;background:var(--border2)}
+.oflds{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.oflds.full{grid-template-columns:1fr}
+.of{background:var(--bg4);border:1px solid var(--border2);border-radius:9px;padding:10px 13px;color:var(--cream);font-size:12px;outline:none;transition:border-color .3s;width:100%}
+.of:focus{border-color:var(--gold)}
+.of::placeholder{color:var(--muted)}
+select.of option{background:var(--bg3)}
+.ctrow{display:flex;justify-content:space-between;align-items:center;padding:11px 14px;background:var(--bg3);border-radius:9px;border:1px solid var(--border);margin-bottom:12px}
+.ctlbl{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1px}
+.ctamt{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--gold2);letter-spacing:1px}
+.wabtn{width:100%;background:linear-gradient(135deg,#25D366,#128C7E);border:none;border-radius:11px;padding:14px;color:#fff;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;transition:all .3s;box-shadow:0 7px 22px rgba(37,211,102,.22)}
+.wabtn:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(37,211,102,.38)}
+.wabtn i{font-size:17px}
+
+/* BOOK TABLE MODAL */
+.modal-bg{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:18px;opacity:0;visibility:hidden;transition:all .35s}
+.modal-bg.on{opacity:1;visibility:visible}
+.mbg{position:absolute;inset:0;background:rgba(0,0,0,.82);backdrop-filter:blur(10px)}
+.modal{position:relative;z-index:1;background:var(--bg2);border-radius:var(--r2);border:1px solid var(--border);width:100%;max-width:520px;max-height:90dvh;overflow-y:auto;padding:38px;transform:scale(.95) translateY(16px);transition:transform .35s}
+.modal-bg.on .modal{transform:scale(1) translateY(0)}
+.mh{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px}
+.mh h3{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700}
+.mh h3 em{color:var(--gold2);font-style:italic}
+.mh p{font-size:12px;color:var(--muted);margin-top:5px}
+.mform{display:flex;flex-direction:column;gap:13px}
+.mrow{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.mg{display:flex;flex-direction:column;gap:6px}
+.mg label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold2)}
+@media(max-width:480px){.mrow{grid-template-columns:1fr}.modal{padding:22px}}
+
+/* CHATBOT */
+.cfab{position:fixed;bottom:24px;right:24px;z-index:700;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));border:none;color:#000;font-size:20px;cursor:pointer;display:grid;place-items:center;box-shadow:0 7px 28px rgba(200,149,26,.4);transition:all .3s}
+.cfab:hover{transform:scale(1.07);box-shadow:0 11px 38px rgba(200,149,26,.6)}
+.cfab .fa-times{display:none}
+.cfab.open .fa-comments{display:none}
+.cfab.open .fa-times{display:block}
+.cbox{position:fixed;bottom:88px;right:24px;z-index:699;width:355px;max-width:calc(100vw - 30px);height:490px;background:var(--bg2);border-radius:20px;border:1px solid var(--border);box-shadow:0 28px 75px rgba(0,0,0,.7);display:flex;flex-direction:column;transform:scale(.9) translateY(14px);opacity:0;visibility:hidden;transition:all .35s cubic-bezier(.4,0,.2,1);transform-origin:bottom right;overflow:hidden}
+.cbox.on{transform:scale(1) translateY(0);opacity:1;visibility:visible}
+@media(max-width:480px){
+  .cbox{bottom:0;right:0;width:100vw;max-width:100vw;height:100dvh;border-radius:0;transform-origin:bottom center}
+  .cbox.on{transform:scale(1) translateY(0)}
+  .cfab{z-index:701}
+}
+.cbh{padding:14px 16px;border-bottom:1px solid var(--border2);display:flex;align-items:center;gap:11px;flex-shrink:0;background:linear-gradient(135deg,rgba(200,149,26,.08),transparent)}
+.cbav{width:38px;height:38px;border-radius:9px;background:linear-gradient(135deg,var(--gold),var(--gold2));display:grid;place-items:center;font-size:16px;color:#000;flex-shrink:0}
+.cbinf{flex:1}
+.cbinf h4{font-size:13px;font-weight:700}
+.cbinf p{font-size:10px;color:var(--gold2);display:flex;align-items:center;gap:4px}
+.cbinf p::before{content:'';width:6px;height:6px;border-radius:50%;background:#25D366;flex-shrink:0}
+/* Mobile close button INSIDE chatbox header — no overlap */
+.cbclose{width:28px;height:28px;border-radius:7px;border:1px solid var(--border2);background:transparent;color:var(--muted);cursor:pointer;font-size:12px;place-items:center;transition:all .3s;flex-shrink:0;display:none}
+.cbclose:hover{border-color:var(--ember);color:var(--ember)}
+@media(max-width:480px){.cbclose{display:grid}}
+.cbmsgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:9px;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.msg{max-width:82%;padding:10px 14px;border-radius:13px;font-size:12px;line-height:1.65;animation:mp .3s ease}
+@keyframes mp{from{opacity:0;transform:scale(.95) translateY(7px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.msg.bot{background:var(--bg3);border:1px solid var(--border2);border-bottom-left-radius:3px;align-self:flex-start}
+.msg.user{background:linear-gradient(135deg,var(--gold),var(--gold2));border-bottom-right-radius:3px;align-self:flex-end;color:#000;font-weight:600}
+.typing{display:flex;align-items:center;gap:4px;padding:12px 14px}
+.td{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:tdb 1.1s ease-in-out infinite}
+.td:nth-child(2){animation-delay:.18s}.td:nth-child(3){animation-delay:.36s}
+@keyframes tdb{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+.cbsuggs{display:flex;gap:6px;flex-wrap:wrap;padding:0 13px 9px;flex-shrink:0}
+.sugg{background:rgba(200,149,26,.08);border:1px solid rgba(200,149,26,.22);border-radius:18px;padding:5px 11px;font-size:10px;font-weight:600;color:var(--gold2);cursor:pointer;transition:all .2s}
+.sugg:hover{background:rgba(200,149,26,.15)}
+.cbin-row{padding:11px 13px;border-top:1px solid var(--border2);display:flex;gap:7px;flex-shrink:0;align-items:center}
+.cbinp{flex:1;background:var(--bg3);border:1px solid var(--border2);border-radius:9px;padding:10px 13px;color:var(--cream);font-size:12px;outline:none;transition:border-color .3s}
+.cbinp:focus{border-color:var(--gold)}
+.cbinp::placeholder{color:var(--muted)}
+.cbsend{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--gold),var(--gold2));border:none;color:#000;font-size:13px;cursor:pointer;display:grid;place-items:center;transition:all .3s;flex-shrink:0}
+.cbsend:hover{transform:scale(1.07)}
+
+/* WA FLOAT */
+.wafloat{position:fixed;bottom:88px;right:24px;z-index:698;display:flex;flex-direction:column;align-items:center;gap:4px}
+.waf{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#25D366,#0fa34e);border:none;cursor:pointer;display:grid;place-items:center;font-size:22px;color:#fff;box-shadow:0 7px 22px rgba(37,211,102,.3);animation:wap 3s ease infinite;text-decoration:none;transition:all .3s}
+.waf:hover{transform:scale(1.07)}
+@keyframes wap{0%,100%{box-shadow:0 7px 22px rgba(37,211,102,.3)}50%{box-shadow:0 7px 36px rgba(37,211,102,.6),0 0 0 7px rgba(37,211,102,.07)}}
+.watip{font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:rgba(37,211,102,.9);color:#fff;padding:3px 8px;border-radius:8px;white-space:nowrap}
+
+/* TOAST */
+.toast{position:fixed;bottom:88px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--gold2);color:#000;padding:10px 22px;border-radius:50px;font-size:12px;font-weight:700;z-index:2000;opacity:0;transition:all .3s;pointer-events:none;display:flex;align-items:center;gap:7px;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* REVEAL */
+.rev{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.rev.vis{opacity:1;transform:translateY(0)}
+.revl{opacity:0;transform:translateX(-28px);transition:opacity .7s ease,transform .7s ease}
+.revl.vis{opacity:1;transform:translateX(0)}
+.revr{opacity:0;transform:translateX(28px);transition:opacity .7s ease,transform .7s ease}
+.revr.vis{opacity:1;transform:translateX(0)}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}
+
+/* FLY TO CART */
+.flyer{position:fixed;z-index:9999;border-radius:50%;overflow:hidden;pointer-events:none;box-shadow:0 6px 20px rgba(0,0,0,.5);border:2px solid var(--gold2)}
+.flyer img{width:100%;height:100%;object-fit:cover}
+@keyframes cartBadgePop{0%{transform:scale(1)}40%{transform:scale(1.8)}70%{transform:scale(.85)}100%{transform:scale(1)}}
+.badge-pop{animation:cartBadgePop .4s cubic-bezier(.4,0,.2,1)}
+</style>
+</head>
+<body>
+
+<!-- PRELOADER -->
+<div id="pre">
+  <div class="pre-ring"></div>
+  <div class="pre-t">CHUNK CITY</div>
+  <div class="pre-s">Ganderbal · Est. 2022</div>
+  <div class="pre-bar"><div class="pre-fill"></div></div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><i class="fa-solid fa-check-circle"></i><span id="toastMsg">Added!</span></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="nav-logo" href="#">
+    <div class="li">CC</div>
+    <div><span class="ln">Chunk City</span><span class="lc">Ganderbal</span></div>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#menu-s">Menu</a></li>
+    <li><a href="#rv-s">Reviews</a></li>
+    <li><a href="#about-s">About</a></li>
+    <li><a href="#book-s">Reserve</a></li>
+    <li><a href="#loc-s">Find Us</a></li>
+  </ul>
+  <div class="nav-end">
+    <button class="btn-t" onclick="openModal()"><i class="fa-solid fa-calendar-check"></i> Book Table</button>
+    <button class="cpill" id="cartBtn"><i class="fa-solid fa-bag-shopping"></i> Cart <span class="cbadge" id="cartCount">0</span></button>
+    <button class="ham" id="ham"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <canvas id="cvs"></canvas>
+  <div class="hbg"></div>
+  <div class="hgrad"></div>
+  <div class="hc">
+    <div class="h-badge"><i class="fa-solid fa-star"></i> Ganderbal's Most Loved · 4.5 Stars · 334+ Reviews</div>
+    <h1 class="htitle">The City<em>of Gold</em></h1>
+    <div class="hdiv"><span></span><i class="fa-solid fa-utensils"></i><span></span></div>
+    <p class="hsub">Where Kashmiri warmth meets bold global flavour. From sizzling Afghani grills to hand-rolled momos — every plate tells a story.</p>
+    <div class="hbtns">
+      <a href="#menu-s" class="btn bg"><i class="fa-solid fa-utensils"></i> Explore Menu</a>
+      <button class="btn bo" onclick="openModal()"><i class="fa-solid fa-calendar-check"></i> Book a Table</button>
+    </div>
+  </div>
+  <div class="hstats">
+    <div><div class="hs-n" data-count="334">0</div><div class="hs-l">Reviews</div></div>
+    <div><div class="hs-n">4.5★</div><div class="hs-l">Rating</div></div>
+    <div><div class="hs-n" data-count="50">0</div><div class="hs-l">Dishes</div></div>
+    <div><div class="hs-n">#1</div><div class="hs-l">Ganderbal</div></div>
+  </div>
+</section>
+
+<!-- STRIP -->
+<div class="strip">
+  <div class="strip-track">
+    <div class="si"><i class="fa-solid fa-fire"></i> Afghani Chicken</div><div class="si"><i class="fa-solid fa-star"></i> 334+ Reviews</div><div class="si"><i class="fa-solid fa-pot-food"></i> Uzbek Pulao</div><div class="si"><i class="fa-solid fa-circle-dot"></i> Handmade Momos</div><div class="si"><i class="fa-solid fa-drumstick-bite"></i> KFC Style</div><div class="si"><i class="fa-solid fa-leaf"></i> Fresh Daily</div><div class="si"><i class="fa-solid fa-location-dot"></i> Heart of Ganderbal</div>
+    <div class="si"><i class="fa-solid fa-fire"></i> Afghani Chicken</div><div class="si"><i class="fa-solid fa-star"></i> 334+ Reviews</div><div class="si"><i class="fa-solid fa-pot-food"></i> Uzbek Pulao</div><div class="si"><i class="fa-solid fa-circle-dot"></i> Handmade Momos</div><div class="si"><i class="fa-solid fa-drumstick-bite"></i> KFC Style</div><div class="si"><i class="fa-solid fa-leaf"></i> Fresh Daily</div><div class="si"><i class="fa-solid fa-location-dot"></i> Heart of Ganderbal</div>
+  </div>
+</div>
+
+<!-- MENU -->
+<div class="mwrap" id="menu-s">
+  <div class="minner">
+    <div class="mhead rev">
+      <div class="tag">Our Menu</div>
+      <h2 class="h2">Crafted with <em>Passion</em></h2>
+      <p class="lead" style="margin:0 auto">Every dish prepared fresh daily — from street-food thrill to royal warmth. Pick your craving.</p>
+    </div>
+    <div class="cats rev d1" id="cats">
+      <button class="cat on" data-cat="all"><i class="fa-solid fa-grid-2"></i> All</button>
+      <button class="cat" data-cat="combos"><i class="fa-solid fa-layer-group"></i> Combos</button>
+      <button class="cat" data-cat="burgers"><i class="fa-solid fa-burger"></i> Burgers</button>
+      <button class="cat" data-cat="pizzaveg"><i class="fa-solid fa-leaf"></i> Pizza Veg</button>
+      <button class="cat" data-cat="pizzanv"><i class="fa-solid fa-drumstick-bite"></i> Pizza Non-Veg</button>
+      <button class="cat" data-cat="wraps"><i class="fa-solid fa-wrap"></i> Wraps</button>
+      <button class="cat" data-cat="kfc"><i class="fa-solid fa-drumstick-bite"></i> KFC Style</button>
+      <button class="cat" data-cat="tandoori"><i class="fa-solid fa-fire-flame-curved"></i> Tandoori</button>
+      <button class="cat" data-cat="indian"><i class="fa-solid fa-pot-food"></i> Indian</button>
+      <button class="cat" data-cat="veg"><i class="fa-solid fa-seedling"></i> Veg</button>
+      <button class="cat" data-cat="chinese"><i class="fa-solid fa-chopsticks"></i> Chinese</button>
+      <button class="cat" data-cat="pasta"><i class="fa-solid fa-wheat-awn"></i> Pasta</button>
+      <button class="cat" data-cat="momos"><i class="fa-solid fa-circle-dot"></i> Momos</button>
+      <button class="cat" data-cat="soups"><i class="fa-solid fa-bowl-food"></i> Soups</button>
+      <button class="cat" data-cat="sides"><i class="fa-solid fa-bread-slice"></i> Sides</button>
+      <button class="cat" data-cat="drinks"><i class="fa-solid fa-bottle-droplet"></i> Drinks</button>
+    </div>
+    <div class="mgrid" id="mgrid"></div>
+  </div>
+</div>
+
+<!-- REVIEWS -->
+<div class="rwrap" id="rv-s">
+  <div class="rinner">
+    <div class="rhead rev"><div class="tag">What People Say</div><h2 class="h2">Loved by <em>Thousands</em></h2><p class="lead" style="margin:0 auto">334 verified Google reviews from real guests.</p></div>
+    <div class="rvp" id="rvp"><div class="rvtrack" id="rvtrack"></div></div>
+    <div class="rvctrls">
+      <button class="rvarr" id="rvprev"><i class="fa-solid fa-arrow-left"></i></button>
+      <div class="rvdots" id="rvdots"></div>
+      <button class="rvarr" id="rvnext"><i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="awrap" id="about-s">
+  <div class="agrid">
+    <div class="avis revl">
+      <img class="ai1" src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=85" alt="Restaurant" loading="lazy"/>
+      <img class="ai2" src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=85" alt="Dishes" loading="lazy"/>
+      <div class="ab"><span>4.5</span><span>Google Stars</span></div>
+    </div>
+    <div class="revr">
+      <div class="tag">Our Story</div>
+      <h2 class="h2">The <em>City of Gold</em></h2>
+      <p style="font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:16px;font-weight:300">Born in the heart of Ganderbal, Chunk City is where stories are shared over steaming plates of Afghani chicken, crispy KFC-style strips, and hand-rolled momos. We blend Kashmiri warmth with bold global flavours.</p>
+      <p style="font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:32px;font-weight:300">Every dish is prepared fresh daily using locally sourced ingredients. Our spacious, well-maintained interior is perfect for family dinners, gatherings, or a quick satisfying bite.</p>
+      <div class="feats">
+        <div class="feat"><div class="fic"><i class="fa-solid fa-fire-flame-curved"></i></div><div><h4>Fresh Daily</h4><p>Sourced every morning</p></div></div>
+        <div class="feat"><div class="fic"><i class="fa-solid fa-shield-halved"></i></div><div><h4>5-Star Hygiene</h4><p>Impeccable standards</p></div></div>
+        <div class="feat"><div class="fic"><i class="fa-solid fa-users"></i></div><div><h4>Family Friendly</h4><p>Perfect for all ages</p></div></div>
+        <div class="feat"><div class="fic"><i class="fa-solid fa-tags"></i></div><div><h4>Great Value</h4><p>Premium at street prices</p></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BOOK TABLE -->
+<div class="bwrap" id="book-s">
+  <div class="binner rev">
+    <div class="bleft">
+      <div class="tag">Reserve a Spot</div>
+      <h2 class="h2" style="font-size:clamp(26px,4vw,42px)">Book Your<br><em>Table</em></h2>
+      <p style="font-size:13px;color:var(--muted);line-height:1.8;margin-top:14px">Reserve for a family dinner, date night, or celebration. We'll confirm on WhatsApp within minutes.</p>
+      <div class="bimgs">
+        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80" alt="Restaurant" loading="lazy"/>
+        <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80" alt="Food" loading="lazy"/>
+      </div>
+    </div>
+    <div class="bright">
+      <form class="bform" onsubmit="submitBook(event)">
+        <div class="frow">
+          <div class="fg"><label><i class="fa-solid fa-user"></i> Your Name</label><input class="fi" type="text" placeholder="Full name" required/></div>
+          <div class="fg"><label><i class="fa-solid fa-phone"></i> Phone</label><input class="fi" type="tel" placeholder="+91 XXXXX XXXXX" required/></div>
+        </div>
+        <div class="frow">
+          <div class="fg"><label><i class="fa-solid fa-calendar"></i> Date</label><input class="fi" type="date" required/></div>
+          <div class="fg"><label><i class="fa-solid fa-clock"></i> Time</label><select class="fi" required><option value="">Select time</option><option>11:00 AM</option><option>12:00 PM</option><option>1:00 PM</option><option>2:00 PM</option><option>3:00 PM</option><option>4:00 PM</option><option>5:00 PM</option><option>6:00 PM</option><option>7:00 PM</option><option>8:00 PM</option><option>9:00 PM</option><option>10:00 PM</option></select></div>
+        </div>
+        <div class="frow">
+          <div class="fg"><label><i class="fa-solid fa-people-group"></i> Guests</label><select class="fi" required><option value="">No. of guests</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7–10</option><option>10+</option></select></div>
+          <div class="fg"><label><i class="fa-solid fa-chair"></i> Seating</label><select class="fi"><option>No preference</option><option>Indoor</option><option>Family section</option><option>Private area</option></select></div>
+        </div>
+        <div class="fg"><label><i class="fa-solid fa-comment"></i> Special Requests</label><textarea class="fi" rows="3" placeholder="Birthday, dietary needs, occasion..."></textarea></div>
+        <button type="submit" class="btn bg" style="width:100%;justify-content:center;border-radius:11px;padding:15px"><i class="fa-brands fa-whatsapp"></i> Confirm via WhatsApp</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- LOCATION -->
+<div class="lwrap" id="loc-s">
+  <div style="max-width:1300px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:56px" class="rev"><div class="tag">Visit Us</div><h2 class="h2">Find <em>Chunk City</em></h2></div>
+    <div class="lgrid">
+      <div class="lcards revl">
+        <div class="lcard"><div class="lic"><i class="fa-solid fa-location-dot"></i></div><div><div class="llbl">Address</div><div class="lval">Chunk City Restaurant</div><div class="lsub">Main Road, Ganderbal, J&K — 191201</div></div></div>
+        <div class="lcard"><div class="lic"><i class="fa-solid fa-phone"></i></div><div><div class="llbl">Phone & WhatsApp</div><div class="lval">+91 99060 68811</div><div class="lsub">Call or WhatsApp for orders & reservations</div></div></div>
+        <div class="lcard"><div class="lic"><i class="fa-solid fa-clock"></i></div><div><div class="llbl">Opening Hours</div><div class="lval">11:00 AM – 11:00 PM</div><div class="lsub">Open all 7 days</div></div></div>
+        <div class="lcard"><div class="lic"><i class="fa-brands fa-google"></i></div><div><div class="llbl">Google Maps</div><div class="lval">4.5 Stars · 334+ Reviews</div><div class="lsub"><a href="https://maps.app.goo.gl/StYmzwRAsagY5Zyf8" target="_blank" rel="noopener" style="color:var(--gold2);text-decoration:none;font-weight:600">View on Google Maps →</a></div></div></div>
+      </div>
+      <div class="mbox revr">
+        <iframe src="https://maps.google.com/maps?q=Chunk+City+Restaurant+Ganderbal+Jammu+Kashmir&t=&z=16&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" loading="lazy" title="Chunk City Location" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="finner">
+    <div class="ftop">
+      <div class="fbrand">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px"><div class="li">CC</div><span style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px">Chunk City</span></div>
+        <p>The City of Gold — where every meal is an experience. Ganderbal's most-loved restaurant since 2022.</p>
+        <div class="fsocs">
+          <a class="fsoc" href="https://wa.me/919906068811" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i></a>
+          <a class="fsoc" href="https://maps.app.goo.gl/StYmzwRAsagY5Zyf8" target="_blank" rel="noopener"><i class="fa-brands fa-google"></i></a>
+          <a class="fsoc" href="tel:+919906068811"><i class="fa-solid fa-phone"></i></a>
+        </div>
+      </div>
+      <div class="fcol">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a href="#menu-s"><i class="fa-solid fa-angle-right"></i> Menu</a></li>
+          <li><a href="#rv-s"><i class="fa-solid fa-angle-right"></i> Reviews</a></li>
+          <li><a href="#about-s"><i class="fa-solid fa-angle-right"></i> About</a></li>
+          <li><a href="#book-s"><i class="fa-solid fa-angle-right"></i> Book Table</a></li>
+          <li><a href="#loc-s"><i class="fa-solid fa-angle-right"></i> Location</a></li>
+        </ul>
+      </div>
+      <div class="fcol">
+        <h4>Specialities</h4>
+        <ul>
+          <li><a href="#menu-s"><i class="fa-solid fa-fire"></i> Afghani Chicken</a></li>
+          <li><a href="#menu-s"><i class="fa-solid fa-drumstick-bite"></i> KFC Style</a></li>
+          <li><a href="#menu-s"><i class="fa-solid fa-pot-food"></i> Uzbeki Pulao</a></li>
+          <li><a href="#menu-s"><i class="fa-solid fa-circle-dot"></i> Handmade Momos</a></li>
+          <li><a href="#menu-s"><i class="fa-solid fa-wheat-awn"></i> Creamy Pasta</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="fbot">
+      <div class="fcopy">© 2026 <b>Chunk City</b> · Ganderbal, J&K. All rights reserved.</div>
+      <div class="fcopy">Made with <b>♥</b> for Ganderbal</div>
+    </div>
+  </div>
+</footer>
+
+<!-- WA FLOAT -->
+<div class="wafloat" id="wafloat">
+  <a class="waf" href="https://wa.me/919906068811" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i></a>
+  <div class="watip">WhatsApp</div>
+</div>
+
+<!-- CART OVERLAY + DRAWER -->
+<div class="ov" id="ov"></div>
+<div class="drawer" id="drawer">
+  <div class="dh">
+    <div class="dtitle"><i class="fa-solid fa-bag-shopping"></i> Your Order</div>
+    <button class="cx" id="drawerClose"><i class="fa-solid fa-times"></i></button>
+  </div>
+  <div class="dbody" id="dbody">
+    <div class="es" id="es"><i class="fa-regular fa-plate-utensils"></i><p>Your cart is empty.<br>Add something delicious!</p></div>
+    <div id="clist" style="display:flex;flex-direction:column;gap:9px"></div>
+  </div>
+  <div class="dfoot" id="dfoot" style="display:none">
+    <div class="osect">
+      <div class="ostitle"><i class="fa-solid fa-user" style="font-size:9px"></i> Your Details</div>
+      <div class="oflds"><input class="of" id="oName" type="text" placeholder="Your name"/><input class="of" id="oPhone" type="tel" placeholder="Phone number"/></div>
+      <div class="oflds full"><input class="of" id="oAddr" type="text" placeholder="Delivery address (street, area)"/></div>
+      <div class="oflds"><input class="of" id="oPin" type="text" placeholder="Pincode" maxlength="6"/><select class="of" id="oTime"><option value="">Preferred time</option><option>ASAP</option><option>12:00 PM</option><option>1:00 PM</option><option>2:00 PM</option><option>3:00 PM</option><option>4:00 PM</option><option>5:00 PM</option><option>6:00 PM</option><option>7:00 PM</option><option>8:00 PM</option><option>9:00 PM</option><option>10:00 PM</option></select></div>
+    </div>
+    <div class="osect">
+      <div class="ostitle"><i class="fa-solid fa-note-sticky" style="font-size:9px"></i> Order Note</div>
+      <textarea class="of" id="oNote" rows="2" style="width:100%;height:56px;resize:none;margin-bottom:11px" placeholder="Extra spicy? No onions? Delivery instructions..."></textarea>
+    </div>
+    <div class="ctrow"><span class="ctlbl">Total</span><span class="ctamt" id="cartTotal">₹0</span></div>
+    <button class="wabtn" id="waBtn"><i class="fa-brands fa-whatsapp"></i> Place Order via WhatsApp</button>
+  </div>
+</div>
+
+<!-- BOOK TABLE MODAL -->
+<div class="modal-bg" id="modal">
+  <div class="mbg" onclick="closeModal()"></div>
+  <div class="modal">
+    <div class="mh">
+      <div><h3>Book a <em>Table</em></h3><p>Confirmed on WhatsApp within minutes</p></div>
+      <button class="cx" onclick="closeModal()"><i class="fa-solid fa-times"></i></button>
+    </div>
+    <form class="mform" onsubmit="submitModal(event)">
+      <div class="mrow"><div class="mg"><label>Full Name</label><input class="fi" type="text" placeholder="Your name" required/></div><div class="mg"><label>Phone</label><input class="fi" type="tel" placeholder="+91 XXXXX XXXXX" required/></div></div>
+      <div class="mrow"><div class="mg"><label>Date</label><input class="fi" type="date" required/></div><div class="mg"><label>Time</label><select class="fi" required><option value="">Select</option><option>11:00 AM</option><option>12:00 PM</option><option>1:00 PM</option><option>2:00 PM</option><option>6:00 PM</option><option>7:00 PM</option><option>8:00 PM</option><option>9:00 PM</option><option>10:00 PM</option></select></div></div>
+      <div class="mrow"><div class="mg"><label>Guests</label><select class="fi" required><option value="">How many?</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7–10</option><option>10+</option></select></div><div class="mg"><label>Occasion</label><select class="fi"><option>Casual dining</option><option>Birthday</option><option>Anniversary</option><option>Business</option><option>Family gathering</option></select></div></div>
+      <div class="mg"><label>Special Requests</label><textarea class="fi" rows="3" placeholder="Dietary needs, decorations, seating..."></textarea></div>
+      <button type="submit" class="btn bg" style="width:100%;justify-content:center;border-radius:11px;padding:14px;font-size:12px"><i class="fa-brands fa-whatsapp"></i> Confirm Reservation via WhatsApp</button>
+    </form>
+  </div>
+</div>
+
+<!-- CHATBOT -->
+<button class="cfab" id="cfab"><i class="fa-solid fa-comments"></i><i class="fa-solid fa-times"></i></button>
+<div class="cbox" id="cbox">
+  <div class="cbh">
+    <div class="cbav"><i class="fa-solid fa-robot"></i></div>
+    <div class="cbinf"><h4>ChunkBot</h4><p>Online — Ask anything</p></div>
+    <button class="cbclose" id="cbclose"><i class="fa-solid fa-times"></i></button>
+  </div>
+  <div class="cbmsgs" id="cbmsgs"></div>
+  <div class="cbsuggs" id="cbsuggs">
+    <button class="sugg" data-q="What's your most popular dish?">Most popular?</button>
+    <button class="sugg" data-q="Show me the full menu with prices">Full menu</button>
+    <button class="sugg" data-q="How do I order on WhatsApp?">How to order?</button>
+    <button class="sugg" data-q="What are opening hours and location?">Hours & location</button>
+  </div>
+  <div class="cbin-row">
+    <input class="cbinp" id="cbinp" type="text" placeholder="Ask about food, prices, hours..."/>
+    <button class="cbsend" id="cbsend"><i class="fa-solid fa-paper-plane"></i></button>
+  </div>
+</div>
+
+<script>
+// ══════════════════ DATA ══════════════════
+const MENU=[
+  // COMBOS
+  {id:1,cat:'combos',name:'Solo Meal',desc:'Burger 1pc, Strips 4pc, Fries, Dips 2pc, 150ml cold drink',price:330,img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=500&q=80'},
+  {id:2,cat:'combos',name:'Friends Meal',desc:'Zinger burger, Zinger cheese burger, Strips 4pc, Popcorn with fries, Dips 4pc, 300ml cold drink',price:540,img:'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=500&q=80'},
+  {id:3,cat:'combos',name:'Family Meal',desc:'Zinger burger, Zinger cheese burger, Strips 6pc, Popcorn with cheese, Chicken blast, Dips 4pc, 300ml cold drink',price:750,img:'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&q=80'},
+  {id:4,cat:'combos',name:'Super Meal',desc:'Zinger burger, Zinger cheese burger, Strips 6pc, Popcorn with fries, Chicken blast medium, Dips 4pc, 450ml cold drink',price:940,img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=500&q=80'},
+  // BURGERS
+  {id:10,cat:'burgers',name:'Grill Chicken Burger',desc:'Juicy grilled chicken patty in a soft bun',price:150,img:'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&q=80'},
+  {id:11,cat:'burgers',name:'Zinger Burger',desc:'Crispy spiced chicken fillet with mayo & lettuce',price:250,img:'https://images.unsplash.com/photo-1550317138-10000687a72b?w=500&q=80'},
+  {id:12,cat:'burgers',name:'Double Chicken Burger',desc:'Double-stacked chicken patties, fully loaded',price:300,img:'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&q=80'},
+  {id:13,cat:'burgers',name:'Malai Tikka Burger',desc:'Creamy malai tikka in a toasted bun',price:140,img:'https://images.unsplash.com/photo-1550317138-10000687a72b?w=500&q=80'},
+  {id:14,cat:'burgers',name:'Chicken Tikka Burger',desc:'Spiced tikka chicken with fresh toppings',price:140,img:'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&q=80'},
+  // PIZZA VEG
+  {id:20,cat:'pizzaveg',name:'Plain Cheese',desc:'A generous blend of cheese',price:140,priceLabel:'from ₹140',img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
+  {id:21,cat:'pizzaveg',name:'Paneer Pizza',desc:'Paneer, veg & 3 types of cheese',price:180,priceLabel:'from ₹180',img:'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&q=80'},
+  {id:22,cat:'pizzaveg',name:'Veg Blast',desc:'3 types of hot veggies & blend of cheese',price:190,priceLabel:'from ₹190',img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
+  {id:23,cat:'pizzaveg',name:'Margherita',desc:'Basil, oregano mix & tomato slice',price:160,priceLabel:'from ₹160',img:'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&q=80'},
+  {id:24,cat:'pizzaveg',name:'Cheese & Corn',desc:'3 types of cheese & sweet corn',price:180,priceLabel:'from ₹180',img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
+  {id:25,cat:'pizzaveg',name:'Mix Veg Pizza',desc:'Onion, capsicum & mushroom',price:190,priceLabel:'from ₹190',img:'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&q=80'},
+  {id:26,cat:'pizzaveg',name:'Cheese Burst Pizza',desc:'Double cheese',price:200,priceLabel:'from ₹200',img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
+  {id:27,cat:'pizzaveg',name:'Knirvana Pizza',desc:'Three types of cheese with mushroom',price:180,priceLabel:'from ₹180',img:'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&q=80'},
+  {id:28,cat:'pizzaveg',name:'Dry Fruit Lovers (Veg)',desc:'Dry fruits, onion, capsicum, mushroom',price:260,priceLabel:'from ₹260',img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
+  {id:29,cat:'pizzaveg',name:'Country Feast Pizza',desc:'American corn, tomato, capsicum, oregano',price:210,priceLabel:'from ₹210',img:'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&q=80'},
+  {id:30,cat:'pizzaveg',name:'Premium Veg. Pizza',desc:'Baby corn, capsicum, tomato, onion, black olives & mushroom',price:240,priceLabel:'from ₹240',img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
+  {id:31,cat:'pizzaveg',name:'Chunk City Special (Veg)',desc:'Choice of any 5 veggies with 3 types of cheese',price:290,priceLabel:'from ₹290',img:'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&q=80'},
+  // PIZZA NON-VEG
+  {id:40,cat:'pizzanv',name:'Roast Chicken Pizza',desc:'Roasted chicken & cheese',price:180,priceLabel:'from ₹180',img:'https://images.unsplash.com/photo-1528137871618-79d2761e3fd5?w=500&q=80'},
+  {id:41,cat:'pizzanv',name:'Chicken Blast Pizza',desc:'Hot chicken & cheese',price:190,priceLabel:'from ₹190',img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
+  {id:42,cat:'pizzanv',name:'Chicken Tikka Pizza',desc:'Chicken tikka with coriander',price:199,priceLabel:'from ₹199',img:'https://images.unsplash.com/photo-1528137871618-79d2761e3fd5?w=500&q=80'},
+  {id:43,cat:'pizzanv',name:'Chicken Salami Pizza',desc:'Salami chicken & capsicum',price:199,priceLabel:'from ₹199',img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
+  {id:44,cat:'pizzanv',name:'Chicken Lovers',desc:'Hot chicken & chicken sausage',price:199,priceLabel:'from ₹199',img:'https://images.unsplash.com/photo-1528137871618-79d2761e3fd5?w=500&q=80'},
+  {id:45,cat:'pizzanv',name:'Chicken Peri Peri Pizza',desc:'Spicy chicken with 3 types of cheese',price:220,priceLabel:'from ₹220',img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
+  {id:46,cat:'pizzanv',name:'Butter Chicken Pizza',desc:'Chicken marinated with butter, cream & milk',price:230,priceLabel:'from ₹230',img:'https://images.unsplash.com/photo-1528137871618-79d2761e3fd5?w=500&q=80'},
+  {id:47,cat:'pizzanv',name:"Kid's Special Chicken Pizza",desc:'Chicken tikka, baby corn, onion & olives',price:220,priceLabel:'from ₹220',img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
+  {id:48,cat:'pizzanv',name:'Dry Fruit Lovers (Chicken)',desc:'Butter chicken with dry fruits',price:270,priceLabel:'from ₹270',img:'https://images.unsplash.com/photo-1528137871618-79d2761e3fd5?w=500&q=80'},
+  {id:49,cat:'pizzanv',name:'Chicken Kabab Pizza',desc:'Chicken kabab & chicken sausage',price:199,priceLabel:'from ₹199',img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
+  {id:50,cat:'pizzanv',name:'Mutton Kabab Pizza',desc:'Mutton kabab & chicken sausage',price:220,priceLabel:'from ₹220',img:'https://images.unsplash.com/photo-1528137871618-79d2761e3fd5?w=500&q=80'},
+  {id:51,cat:'pizzanv',name:'Mexican Bite',desc:'Hot chicken, salami, black olives, mushroom, capsicum',price:299,priceLabel:'from ₹299',img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
+  {id:52,cat:'pizzanv',name:'Chunk City Special Pizza',desc:'Hot chicken, mushroom, baby corn, black olives, tomato, capsicum & sausage',price:320,priceLabel:'from ₹320',img:'https://images.unsplash.com/photo-1528137871618-79d2761e3fd5?w=500&q=80'},
+  // WRAPS
+  {id:60,cat:'wraps',name:'Chicken Tikka Wrap',desc:'Tikka chicken wrapped in soft roti',price:180,img:'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=500&q=80'},
+  {id:61,cat:'wraps',name:'Malai Tikka Wrap',desc:'Creamy malai tikka in a soft wrap',price:150,img:'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=500&q=80'},
+  {id:62,cat:'wraps',name:'Chicken Shawarma',desc:'Classic Arab-style chicken shawarma wrap',price:180,img:'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=500&q=80'},
+  {id:63,cat:'wraps',name:'Chicken Shawarma Platter',desc:'Shawarma, French fries, beetroot salad, Dip ×2',price:300,img:'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=500&q=80'},
+  {id:64,cat:'wraps',name:'Mutton Wrap',desc:'Tender mutton in a crispy toasted wrap',price:200,img:'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=500&q=80'},
+  // KFC STYLE
+  {id:70,cat:'kfc',name:'Chicken Stripes',desc:'Crispy golden strips — juicy inside, crunchy outside',price:220,img:'https://images.unsplash.com/photo-1587116288-a0a0b89f7e9a?w=500&q=80'},
+  {id:71,cat:'kfc',name:'Chicken Nuggets',desc:'Tender bite-sized nuggets, perfectly seasoned',price:220,img:'https://images.unsplash.com/photo-1562967914-608f82629710?w=500&q=80'},
+  {id:72,cat:'kfc',name:'Chicken Popcorn',desc:'Bite-sized crispy popcorn chicken',price:180,img:'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=500&q=80'},
+  {id:73,cat:'kfc',name:'Chicken Lollipop',desc:'Marinated lollipops, smoky and charred',price:180,img:'https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=500&q=80'},
+  {id:74,cat:'kfc',name:'Chunk City Special Chicken',desc:'Our legendary house-special chicken — the crown jewel',price:299,priceLabel:'from ₹299',img:'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=500&q=80'},
+  {id:75,cat:'kfc',name:'Chicken Bucket',desc:'Family-size bucket of crispy fried chicken',price:699,img:'https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=500&q=80'},
+  // TANDOORI
+  {id:80,cat:'tandoori',name:'Tandoori Chicken',desc:'Classic tandoor-roasted chicken, smoky & spiced',price:300,priceLabel:'from ₹300',img:'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=500&q=80'},
+  {id:81,cat:'tandoori',name:'Afghani Chicken',desc:'Rich creamy Afghani-style grilled chicken',price:300,priceLabel:'from ₹300',img:'https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=500&q=80'},
+  {id:82,cat:'tandoori',name:'Chicken Tikka',desc:'Tender tikka marinated in spiced yogurt',price:250,priceLabel:'from ₹250',img:'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=500&q=80'},
+  {id:83,cat:'tandoori',name:'Tandoori Chicken (Whole)',desc:'Full tandoori chicken — pre-order required',price:700,img:'https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=500&q=80'},
+  {id:84,cat:'tandoori',name:'Tandoori Raan',desc:'Slow-roasted whole leg — pre-order required',price:2999,img:'https://images.unsplash.com/photo-1544025162-d76694265947?w=500&q=80'},
+  // INDIAN MAIN COURSE
+  {id:90,cat:'indian',name:'Veg. Biryani',desc:'Fragrant basmati rice with mixed vegetables',price:100,priceLabel:'from ₹100',img:'https://images.unsplash.com/photo-1603360946369-dc9bb6258143?w=500&q=80'},
+  {id:91,cat:'indian',name:'Hyderabadi Dum Biryani',desc:'Slow-cooked aromatic dum biryani',price:120,priceLabel:'from ₹120',img:'https://images.unsplash.com/photo-1596797038530-2c107229654b?w=500&q=80'},
+  {id:92,cat:'indian',name:'Muradabadi Dum Biryani',desc:'Traditional Muradabadi-style chicken biryani',price:110,priceLabel:'from ₹110',img:'https://images.unsplash.com/photo-1603360946369-dc9bb6258143?w=500&q=80'},
+  {id:93,cat:'indian',name:"Chunk City's Special Biryani",desc:'Our signature biryani — house secret recipe',price:160,priceLabel:'from ₹160',img:'https://images.unsplash.com/photo-1596797038530-2c107229654b?w=500&q=80'},
+  {id:94,cat:'indian',name:'Butter Chicken Boneless',desc:'Silky butter chicken in rich tomato-cream gravy',price:299,priceLabel:'from ₹299',img:'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=500&q=80'},
+  {id:95,cat:'indian',name:'Butter Chicken (With Bone)',desc:'Classic butter chicken with bone-in pieces',price:300,priceLabel:'from ₹300',img:'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=500&q=80'},
+  {id:96,cat:'indian',name:'Fried Chicken (Dry Fry)',desc:'Crispy dry-fried chicken with bold spices',price:250,priceLabel:'from ₹250',img:'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=500&q=80'},
+  {id:97,cat:'indian',name:'Fried Chicken (With Onion)',desc:'Golden fried chicken tossed with caramelised onions',price:260,priceLabel:'from ₹260',img:'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=500&q=80'},
+  {id:98,cat:'indian',name:'Chicken Kabab Kanti',desc:'Succulent chicken kabab kanti',price:200,priceLabel:'from ₹200',img:'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=500&q=80'},
+  {id:99,cat:'indian',name:'Mutton Kabab Kanti',desc:'Rich mutton kabab in spiced gravy',price:250,priceLabel:'from ₹250',img:'https://images.unsplash.com/photo-1544025162-d76694265947?w=500&q=80'},
+  {id:100,cat:'indian',name:'Kadayi Chicken (Boneless)',desc:'Bold kadayi masala with boneless chicken',price:280,priceLabel:'from ₹280',img:'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=500&q=80'},
+  {id:101,cat:'indian',name:'Chicken Curry',desc:'Rich aromatic home-style chicken curry',price:299,priceLabel:'from ₹299',img:'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=500&q=80'},
+  {id:102,cat:'indian',name:'Masala Chicken',desc:'Spiced masala chicken with onion gravy',price:300,priceLabel:'from ₹300',img:'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=500&q=80'},
+  {id:103,cat:'indian',name:'Chicken Mughlai',desc:'Royal Mughlai-style rich chicken',price:350,priceLabel:'from ₹350',img:'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=500&q=80'},
+  {id:104,cat:'indian',name:'Fish Kanti',desc:'Flavourful fish curry',price:280,priceLabel:'from ₹280',img:'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=500&q=80'},
+  {id:105,cat:'indian',name:'Fried Fish',desc:'Crispy golden fried fish',price:140,priceLabel:'from ₹140',img:'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=500&q=80'},
+  {id:106,cat:'indian',name:'Chicken Kanti',desc:'Tender chicken kanti, 8 or 16 pcs',price:250,priceLabel:'from ₹250',img:'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=500&q=80'},
+  {id:107,cat:'indian',name:'Special Kashmiri Pulao',desc:'Kabab, chicken, paneer & dry fruits',price:290,priceLabel:'from ₹290',img:'https://images.unsplash.com/photo-1596797038530-2c107229654b?w=500&q=80'},
+  // VEG ITEMS
+  {id:110,cat:'veg',name:'Mattar Mushroom',desc:'Peas & mushroom in spiced gravy',price:200,priceLabel:'from ₹200',img:'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=500&q=80'},
+  {id:111,cat:'veg',name:'Mattar Paneer',desc:'Soft paneer & peas in tomato gravy',price:250,priceLabel:'from ₹250',img:'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=500&q=80'},
+  {id:112,cat:'veg',name:'Masala Paneer',desc:'Paneer cubes in spicy masala sauce',price:230,priceLabel:'from ₹230',img:'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=500&q=80'},
+  {id:113,cat:'veg',name:'Butter Paneer',desc:'Paneer in rich creamy butter sauce',price:250,priceLabel:'from ₹250',img:'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=500&q=80'},
+  {id:114,cat:'veg',name:'Kadayi Paneer',desc:'Paneer in bold kadayi masala',price:270,priceLabel:'from ₹270',img:'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=500&q=80'},
+  {id:115,cat:'veg',name:'Veg Biryani',desc:'Fragrant vegetable biryani',price:100,priceLabel:'from ₹100',img:'https://images.unsplash.com/photo-1603360946369-dc9bb6258143?w=500&q=80'},
+  {id:116,cat:'veg',name:'Veg Soup',desc:'Light and nourishing vegetable soup',price:80,img:'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=500&q=80'},
+  {id:117,cat:'veg',name:'Veg Fried Rice',desc:'Wok-tossed rice with fresh vegetables',price:160,img:'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=500&q=80'},
+  // CHINESE
+  {id:120,cat:'chinese',name:'Veg Fried Rice',desc:'Wok-tossed rice with vegetables & soy',price:159,img:'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=500&q=80'},
+  {id:121,cat:'chinese',name:'Zeera Fried Rice',desc:'Aromatic cumin-spiced fried rice',price:140,img:'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=500&q=80'},
+  {id:122,cat:'chinese',name:'Chicken Fried Rice',desc:'Wok-fired rice with tender chicken',price:199,img:'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=500&q=80'},
+  {id:123,cat:'chinese',name:'Egg Fried Rice',desc:'Classic fluffy egg fried rice',price:149,img:'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=500&q=80'},
+  {id:124,cat:'chinese',name:'Chilly Chicken',desc:'Spicy stir-fried chicken with green chillies',price:260,img:'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=500&q=80'},
+  {id:125,cat:'chinese',name:'Chicken Manchurian',desc:'Saucy Manchurian chicken in spicy gravy',price:270,img:'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=500&q=80'},
+  {id:126,cat:'chinese',name:'Potato Manchurian',desc:'Crispy potato balls in spicy Manchurian sauce',price:149,img:'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=500&q=80'},
+  {id:127,cat:'chinese',name:'Garlic Chicken',desc:'Fragrant stir-fried chicken in garlic sauce',price:270,img:'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=500&q=80'},
+  {id:128,cat:'chinese',name:'Lemon Chicken',desc:'Tangy citrus-glazed chicken strips',price:280,img:'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=500&q=80'},
+  {id:129,cat:'chinese',name:'Veg Chowmein',desc:'Stir-fried noodles with fresh vegetables',price:120,img:'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=500&q=80'},
+  {id:130,cat:'chinese',name:'Egg Chowmein',desc:'Egg noodles stir-fried with veggies',price:120,img:'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=500&q=80'},
+  {id:131,cat:'chinese',name:'Chicken Chowmein',desc:'Wok-tossed chicken noodles',price:160,img:'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=500&q=80'},
+  // PASTA
+  {id:140,cat:'pasta',name:'Chicken Alfredo Pasta',desc:'Silky white cream sauce pasta with tender chicken',price:300,img:'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=500&q=80'},
+  {id:141,cat:'pasta',name:'Veg Alfredo Pasta',desc:'Creamy white sauce pasta with garden vegetables',price:150,img:'https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?w=500&q=80'},
+  {id:142,cat:'pasta',name:'Veg Arrabbiata Pasta',desc:'Spicy tomato pasta with bell peppers & herbs',price:150,img:'https://images.unsplash.com/photo-1548523848-6b5d4d7cce23?w=500&q=80'},
+  {id:143,cat:'pasta',name:'Chicken Arrabbiata Pasta',desc:'Fiery tomato pasta with spiced chicken',price:300,img:'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=500&q=80'},
+  // MOMOS
+  {id:150,cat:'momos',name:'Steamed Momos (Non-Veg)',desc:'Soft handcrafted non-veg dumplings with spicy chutney',price:100,img:'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=500&q=80'},
+  {id:151,cat:'momos',name:'Fried Momos (Non-Veg)',desc:'Crispy pan-fried momos with fiery red sauce',price:120,img:'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=500&q=80'},
+  // SOUPS
+  {id:160,cat:'soups',name:'Clear Soup / Veg Chicken',desc:'Light and clear soup, veg or chicken',price:100,img:'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=500&q=80'},
+  {id:161,cat:'soups',name:'Chicken Sweet Corn',desc:'Thick sweet corn chicken soup',price:120,img:'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=500&q=80'},
+  {id:162,cat:'soups',name:'Chicken Hot & Sour',desc:'Spicy tangy hot & sour chicken soup',price:120,img:'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=500&q=80'},
+  // SIDES
+  {id:170,cat:'sides',name:'French Fries',desc:'Golden crispy fries seasoned with sea salt',price:120,img:'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&q=80'},
+  {id:171,cat:'sides',name:'Peri Peri Fries',desc:'Golden fries tossed in bold peri peri spice',price:140,img:'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&q=80'},
+  {id:172,cat:'sides',name:'Garlic Bread + Cheese',desc:'Toasted garlic bread loaded with molten cheese',price:150,img:'https://images.unsplash.com/photo-1568471173242-461f0a730452?w=500&q=80'},
+  {id:173,cat:'sides',name:'Green Salad',desc:'Fresh crisp green salad',price:50,img:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&q=80'},
+  {id:174,cat:'sides',name:'Finger Salad',desc:'Mixed finger salad platter',price:70,img:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&q=80'},
+  {id:175,cat:'sides',name:'Plain Naan',desc:'Soft fluffy tandoor-baked naan',price:50,img:'https://images.unsplash.com/photo-1568471173242-461f0a730452?w=500&q=80'},
+  {id:176,cat:'sides',name:'Butter Naan',desc:'Warm naan brushed with golden butter',price:65,img:'https://images.unsplash.com/photo-1568471173242-461f0a730452?w=500&q=80'},
+  {id:177,cat:'sides',name:'Garlic Naan',desc:'Garlic-brushed crispy naan bread',price:60,img:'https://images.unsplash.com/photo-1568471173242-461f0a730452?w=500&q=80'},
+  {id:178,cat:'sides',name:'Tandoori Roti',desc:'Wholesome tandoori roti',price:30,img:'https://images.unsplash.com/photo-1568471173242-461f0a730452?w=500&q=80'},
+  // DRINKS (Mocktails, Shakes, Hot Beverages)
+  {id:180,cat:'drinks',name:'Fresh Lime Mojito',desc:'Classic fresh lime with mint & soda',price:99,img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=80'},
+  {id:181,cat:'drinks',name:'Green Apple Mojito',desc:'Refreshing green apple mojito',price:110,img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=80'},
+  {id:182,cat:'drinks',name:'Classic Mint Mojito',desc:'Classic mojito with fresh mint',price:100,img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=80'},
+  {id:183,cat:'drinks',name:'Watermelon Mojito',desc:'Fresh watermelon & mint mocktail',price:110,img:'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=500&q=80'},
+  {id:184,cat:'drinks',name:'Deep Blue Sea',desc:'Blue ocean mocktail with citrus',price:120,img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=80'},
+  {id:185,cat:'drinks',name:'Virgin Mojito',desc:'Classic non-alcoholic mojito',price:110,img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=80'},
+  {id:186,cat:'drinks',name:'Mango Shake',desc:'Thick creamy fresh mango shake',price:120,img:'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=500&q=80'},
+  {id:187,cat:'drinks',name:'Banana Shake',desc:'Smooth and rich banana milkshake',price:120,img:'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=500&q=80'},
+  {id:188,cat:'drinks',name:'Mr Chocolate Shake',desc:'Rich indulgent chocolate milkshake',price:130,img:'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=500&q=80'},
+  {id:189,cat:'drinks',name:'Strawberry Shake',desc:'Fresh strawberry milkshake',price:130,img:'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=500&q=80'},
+  {id:190,cat:'drinks',name:'Vanilla Shake',desc:'Classic creamy vanilla shake',price:110,img:'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=500&q=80'},
+  {id:191,cat:'drinks',name:'Kit Kat Shake',desc:'Kit Kat crumble chocolate shake',price:140,img:'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=500&q=80'},
+  {id:192,cat:'drinks',name:'Cold Coffee Shake',desc:'Iced coffee milkshake',price:120,img:'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=500&q=80'},
+  {id:193,cat:'drinks',name:'Lemon Tea',desc:'Refreshing hot lemon tea',price:60,img:'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=500&q=80'},
+  {id:194,cat:'drinks',name:'Green Tea',desc:'Soothing premium green tea',price:60,img:'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=500&q=80'},
+  {id:195,cat:'drinks',name:'Kashmiri Kehwa',desc:'Traditional Kashmiri kehwa with spices & saffron',price:60,img:'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=500&q=80'},
+];
+// Apply images from images.js
+if(typeof MENU_IMAGES!=='undefined'){MENU.forEach(m=>{if(MENU_IMAGES[m.name])m.img=MENU_IMAGES[m.name];});}
+
+const REVIEWS=[
+  {name:'Raina Irshad',time:'2 months ago',text:'Fantastic experience! Well-maintained and spacious interior. Service is truly five-star. From authentic Wazwan to fast food — everything was excellent. Highly recommended!',stars:5},
+  {name:'AsIf_01',time:'2 months ago',text:'Perfect vibe for family & friends. Fresh food, great hygiene, budget-friendly. Authentic Afghani, Malai Tikka & wide range of pizzas at very affordable prices. Taste once & thank me later.',stars:5},
+  {name:'Bisma Fayaz',time:'2 months ago',text:'Ordered takeout and was amazed by the quality! Afghani chicken flavorful, naan hot & fresh. KFC strips were excellent — perfectly crispy outside, juicy inside. Packaging was spill-proof too.',stars:5},
+  {name:'Rahil Tantary',time:'5 months ago',text:'An absolute delight from start to finish. You can taste the freshness and love in every dish. Staff are warm, attentive, genuinely welcoming. It\'s not just a restaurant — it\'s an experience.',stars:5},
+  {name:'Dr Sahreen',time:'5 months ago',text:'Truly impressed. Great variety, everything fresh and beautifully presented. Cozy ambiance with soft music. Staff were friendly and attentive throughout. A perfect café experience.',stars:5},
+  {name:'Umaiz Wani',time:'2 months ago',text:'Superb experience — great taste & affordable prices. Hygiene is next level. Feels like dining in a 5-star hotel at street-food prices!',stars:5},
+  {name:'Sahiba Manzoor',time:'a month ago',text:'Came all the way from Srinagar — worth every kilometre. Very clean and well-maintained. Loved the food. Staff behavior was warm, polite, and welcoming.',stars:5},
+  {name:'Syed Rabiah',time:'4 months ago',text:'Amazing experience! Absolutely delicious — fresh ingredients, beautifully presented, full of flavor. Staff were friendly without being intrusive. Atmosphere was cozy and welcoming.',stars:5},
+  {name:'Naseer Bhat',time:'5 months ago',text:'The ambience, food, hospitality — everything par excellence! Also very affordable. Exactly what Ganderbal needed.',stars:5},
+  {name:'Mir Foyzia',time:'a month ago',text:'Outstanding experience. The food, ambiance and price made me feel that good food doesn\'t have to be expensive. Will keep coming back!',stars:5},
+  {name:'8 Bit Ninja',time:'a month ago',text:'Absolutely loved the food. Everything was fresh, flavorful, and perfectly prepared. Quality, taste, and presentation were top-notch, with generous portions. Highly recommended.',stars:5},
+  {name:'ZAHEER ABASS',time:'4 months ago',text:'Great food and cool atmosphere — delicious, fresh, satisfying. Beautiful restaurant with warm energy. Service was excellent. We\'ll definitely be regulars.',stars:5},
+];
+
+// ══════════════════ CART + localStorage ══════════════════
+let cart=JSON.parse(localStorage.getItem('cc_cart')||'[]');
+function saveCart(){localStorage.setItem('cc_cart',JSON.stringify(cart));}
+function cartTotal(){return cart.reduce((s,i)=>s+i.price*i.qty,0);}
+function cartQty(){return cart.reduce((s,i)=>s+i.qty,0);}
+function addToCart(id){
+  const item=MENU.find(m=>m.id===id);
+  const ex=cart.find(c=>c.id===id);
+  if(ex)ex.qty++;else cart.push({...item,qty:1});
+  saveCart();updateCartUI();showToast(`${item.name} added`);
+  const btn=document.querySelector(`.add[data-id="${id}"]`);
+  if(btn){
+    const card=btn.closest('.mc');
+    flyToCart(card, item.name);
+    btn.classList.add('done');btn.innerHTML='<i class="fa-solid fa-check"></i>';
+    setTimeout(()=>{btn.classList.remove('done');btn.innerHTML='<i class="fa-solid fa-plus"></i>';},1200);
+  }
+}
+// ══════════════════ FLY TO CART ══════════════════
+function flyToCart(cardEl, itemName) {
+  const cardImg = cardEl.querySelector('.mc-img');
+  const cartBtn = document.getElementById('cartBtn');
+  if (!cardImg || !cartBtn) return;
+  const ir = cardImg.getBoundingClientRect();
+  const cr = cartBtn.getBoundingClientRect();
+  const startSize = 64;
+  const endSize = 22;
+  const flyer = document.createElement('div');
+  flyer.className = 'flyer';
+  flyer.style.cssText = `width:${startSize}px;height:${startSize}px;left:${ir.left+ir.width/2-startSize/2}px;top:${ir.top+ir.height/2-startSize/2}px;transition:none`;
+  const img = document.createElement('img');
+  img.src = cardImg.src;
+  img.alt = itemName;
+  flyer.appendChild(img);
+  document.body.appendChild(flyer);
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      flyer.style.transition = 'left .65s cubic-bezier(.4,-.1,.6,1.2),top .65s cubic-bezier(.55,.05,.45,1.5),width .65s ease,height .65s ease,opacity .55s ease .1s';
+      flyer.style.left = cr.left + cr.width/2 - endSize/2 + 'px';
+      flyer.style.top  = cr.top  + cr.height/2 - endSize/2 + 'px';
+      flyer.style.width  = endSize + 'px';
+      flyer.style.height = endSize + 'px';
+      flyer.style.opacity = '0';
+    });
+  });
+  setTimeout(() => {
+    flyer.remove();
+    const badge = document.getElementById('cartCount');
+    badge.classList.remove('badge-pop');
+    void badge.offsetWidth;
+    badge.classList.add('badge-pop');
+    setTimeout(() => badge.classList.remove('badge-pop'), 400);
+  }, 680);
+}
+
+window.addToCart=addToCart;
+function changeQty(id,d){
+  const idx=cart.findIndex(c=>c.id===id);if(idx<0)return;
+  cart[idx].qty+=d;if(cart[idx].qty<=0)cart.splice(idx,1);
+  saveCart();updateCartUI();
+}
+window.changeQty=changeQty;
+function updateCartUI(){
+  const qty=cartQty();
+  document.getElementById('cartCount').textContent=qty;
+  document.getElementById('cartTotal').textContent=`₹${cartTotal()}`;
+  const list=document.getElementById('clist');
+  const es=document.getElementById('es');
+  const foot=document.getElementById('dfoot');
+  if(!cart.length){list.style.display='none';es.style.display='flex';foot.style.display='none';}
+  else{
+    list.style.display='flex';es.style.display='none';foot.style.display='block';
+    list.innerHTML=cart.map(c=>`<div class="ci">
+      <img class="cit" src="${c.img}" alt="${c.name}" loading="lazy"/>
+      <div class="cid"><div class="cin">${c.name}</div><div class="cip">₹${c.price*c.qty}</div></div>
+      <div class="ciq">
+        <button class="qb" onclick="changeQty(${c.id},-1)"><i class="fa-solid fa-minus"></i></button>
+        <span class="qn">${c.qty}</span>
+        <button class="qb" onclick="changeQty(${c.id},1)"><i class="fa-solid fa-plus"></i></button>
+      </div>
+    </div>`).join('');
+  }
+}
+updateCartUI();
+
+// WA Order
+document.getElementById('waBtn').addEventListener('click',()=>{
+  if(!cart.length)return;
+  const name=document.getElementById('oName').value.trim();
+  const phone=document.getElementById('oPhone').value.trim();
+  const addr=document.getElementById('oAddr').value.trim();
+  const pin=document.getElementById('oPin').value.trim();
+  const time=document.getElementById('oTime').value;
+  const note=document.getElementById('oNote').value.trim();
+  let msg='🍽️ *NEW ORDER — Chunk City Ganderbal*\n━━━━━━━━━━━━━━━━━━\n';
+  if(name)msg+=`👤 *Name:* ${name}\n`;
+  if(phone)msg+=`📞 *Phone:* ${phone}\n`;
+  if(addr)msg+=`📍 *Address:* ${addr}${pin?', '+pin:''}\n`;
+  if(time)msg+=`⏰ *Preferred Time:* ${time}\n`;
+  msg+='━━━━━━━━━━━━━━━━━━\n*ORDER ITEMS:*\n';
+  cart.forEach((item,i)=>{msg+=`${i+1}. ${item.name} × ${item.qty} = ₹${item.qty*item.price}\n`;});
+  msg+=`━━━━━━━━━━━━━━━━━━\n💰 *TOTAL: ₹${cartTotal()}*\n`;
+  if(note)msg+=`\n📝 *Note:* ${note}\n`;
+  msg+='\n_Sent from Chunk City website_';
+  window.open(`https://wa.me/919906068811?text=${encodeURIComponent(msg)}`,'_blank');
+});
+
+// Cart drawer
+const ov=document.getElementById('ov'),drawer=document.getElementById('drawer');
+document.getElementById('cartBtn').addEventListener('click',()=>{ov.classList.add('on');drawer.classList.add('on');});
+document.getElementById('drawerClose').addEventListener('click',()=>{ov.classList.remove('on');drawer.classList.remove('on');});
+ov.addEventListener('click',()=>{ov.classList.remove('on');drawer.classList.remove('on');});
+
+// Book table
+function openModal(){document.getElementById('modal').classList.add('on');}
+function closeModal(){document.getElementById('modal').classList.remove('on');}
+window.openModal=openModal;window.closeModal=closeModal;
+
+function submitBook(e){
+  e.preventDefault();
+  const vals=[...e.target.querySelectorAll('input,select,textarea')].map(i=>i.value);
+  let msg=`📅 *TABLE RESERVATION — Chunk City Ganderbal*\n━━━━━━━━━━━━━━━━━━\n`;
+  msg+=`👤 *Name:* ${vals[0]}\n📞 *Phone:* ${vals[1]}\n📅 *Date:* ${vals[2]}\n⏰ *Time:* ${vals[3]}\n👥 *Guests:* ${vals[4]}\n🪑 *Seating:* ${vals[5]}\n`;
+  if(vals[6])msg+=`📝 *Note:* ${vals[6]}`;
+  msg+='\n\n_Sent from Chunk City website_';
+  window.open(`https://wa.me/919906068811?text=${encodeURIComponent(msg)}`,'_blank');
+}
+window.submitBook=submitBook;
+
+function submitModal(e){
+  e.preventDefault();
+  const vals=[...e.target.querySelectorAll('input,select,textarea')].map(i=>i.value);
+  let msg=`📅 *TABLE RESERVATION — Chunk City Ganderbal*\n━━━━━━━━━━━━━━━━━━\n`;
+  msg+=`👤 *Name:* ${vals[0]}\n📞 *Phone:* ${vals[1]}\n📅 *Date:* ${vals[2]}\n⏰ *Time:* ${vals[3]}\n👥 *Guests:* ${vals[4]}\n🎉 *Occasion:* ${vals[5]}\n`;
+  if(vals[6])msg+=`📝 *Requests:* ${vals[6]}`;
+  msg+='\n\n_Sent from Chunk City website_';
+  window.open(`https://wa.me/919906068811?text=${encodeURIComponent(msg)}`,'_blank');
+  closeModal();
+}
+window.submitModal=submitModal;
+
+// ══════════════════ RENDER MENU ══════════════════
+function renderMenu(cat='all'){
+  const items=cat==='all'?MENU:MENU.filter(m=>m.cat===cat);
+  document.getElementById('mgrid').innerHTML=items.map((m,i)=>`
+    <div class="mc rev" style="transition-delay:${(i%8)*.06}s">
+      <div class="mc-iw"><img class="mc-img" src="${m.img}" alt="${m.name}" loading="lazy"/><div class="mc-tag">${m.cat.toUpperCase()}</div></div>
+      <div class="mc-body">
+        <div class="mc-name">${m.name}</div>
+        <div class="mc-desc">${m.desc}</div>
+        <div class="mc-foot"><div class="mc-price">${m.priceLabel||('₹'+m.price)}</div><button class="add" data-id="${m.id}" onclick="addToCart(${m.id})"><i class="fa-solid fa-plus"></i></button></div>
+      </div>
+    </div>`).join('');
+  setTimeout(initReveal,30);
+}
+document.getElementById('cats').addEventListener('click',e=>{
+  const btn=e.target.closest('.cat');if(!btn)return;
+  document.querySelectorAll('.cat').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');renderMenu(btn.dataset.cat);
+});
+renderMenu();
+
+// ══════════════════ REVIEWS ══════════════════
+let rvIdx=0,rvAuto;
+function getVis(){return window.innerWidth<700?1:window.innerWidth<1060?2:3;}
+function renderRv(){
+  document.getElementById('rvtrack').innerHTML=REVIEWS.map(r=>`
+    <div class="rvcard">
+      <div class="rvtop"><div class="rvav">${r.name[0]}</div><div class="rvi"><div class="rvn">${r.name}</div><div class="rvt">${r.time}</div></div><div class="rvs">${'<i class="fa-solid fa-star"></i>'.repeat(r.stars)}</div></div>
+      <div class="rvq">"</div>
+      <div class="rvtxt">${r.text}</div>
+    </div>`).join('');
+  buildDots();moveRv();
+}
+function buildDots(){
+  const pages=Math.ceil(REVIEWS.length/getVis());
+  document.getElementById('rvdots').innerHTML=Array.from({length:pages},(_,i)=>`<div class="rvd${i===0?' on':''}" data-i="${i}"></div>`).join('');
+  document.getElementById('rvdots').onclick=e=>{const d=e.target.closest('.rvd');if(d){rvIdx=+d.dataset.i;moveRv();resetAuto();}};
+}
+function moveRv(){
+  const track=document.getElementById('rvtrack');
+  const vis=getVis();
+  const card=track.querySelector('.rvcard');if(!card)return;
+  const pages=Math.ceil(REVIEWS.length/vis);
+  rvIdx=Math.max(0,Math.min(rvIdx,pages-1));
+  const cw=card.offsetWidth+18;
+  track.style.transform=`translateX(-${rvIdx*vis*cw}px)`;
+  document.querySelectorAll('.rvd').forEach((d,i)=>d.classList.toggle('on',i===rvIdx));
+}
+function nextRv(){const p=Math.ceil(REVIEWS.length/getVis());rvIdx=(rvIdx+1)%p;moveRv();}
+function prevRv(){const p=Math.ceil(REVIEWS.length/getVis());rvIdx=(rvIdx-1+p)%p;moveRv();}
+function resetAuto(){clearInterval(rvAuto);rvAuto=setInterval(nextRv,3800);}
+document.getElementById('rvnext').onclick=()=>{nextRv();resetAuto();};
+document.getElementById('rvprev').onclick=()=>{prevRv();resetAuto();};
+window.addEventListener('resize',()=>{buildDots();moveRv();});
+
+// Touch/mouse drag on review viewport
+let ds=null,dd=0,dr=false;
+const vp=document.getElementById('rvp');
+vp.addEventListener('mousedown',e=>{ds=e.clientX;dr=false;});
+vp.addEventListener('mousemove',e=>{if(ds!==null){dd=e.clientX-ds;dr=Math.abs(dd)>8;}});
+vp.addEventListener('mouseup',()=>{if(dr){if(dd<-40)nextRv();else if(dd>40)prevRv();resetAuto();}ds=null;dr=false;dd=0;});
+vp.addEventListener('touchstart',e=>{ds=e.touches[0].clientX;dr=false;},{passive:true});
+vp.addEventListener('touchmove',e=>{if(ds!==null){dd=e.touches[0].clientX-ds;dr=Math.abs(dd)>8;}},{passive:true});
+vp.addEventListener('touchend',()=>{if(dr){if(dd<-40)nextRv();else if(dd>40)prevRv();resetAuto();}ds=null;dr=false;dd=0;});
+vp.addEventListener('mouseleave',()=>{ds=null;dr=false;dd=0;});
+renderRv();resetAuto();
+
+// ══════════════════ CHATBOT ══════════════════
+const SYS=`You are ChunkBot, the friendly AI assistant for Chunk City Restaurant in Ganderbal, Jammu & Kashmir, India.
+RESTAURANT: Name: Chunk City | Location: Heart of Ganderbal, J&K 191201 | Phone/WhatsApp: +91 99060 68811 | Hours: 11 AM – 11 PM daily | Rating: 4.5/5 · 334+ Google reviews | Tagline: "The City of Gold"
+MENU:
+Sides: French Fries ₹120, Peri Peri Fries ₹140, Garlic Bread+Cheese ₹150
+KFC Style: Chicken Stripes ₹220, Nuggets ₹220, Popcorn ₹180, Lollipop ₹180, Chunk City Special ₹299, Chicken Bucket ₹699
+Pasta: Chicken Alfredo ₹300, Veg Alfredo ₹150, Veg Arrabbiata ₹150, Chicken Arrabbiata ₹300
+Grill: Grilled Lamb Chops (4pc) ₹499
+Pulao: Uzbek Pulao ₹500, Kabuli Pulao ₹550
+Chinese: Veg Fried Rice ₹159, Zeera Fried Rice ₹140, Chicken Fried Rice ₹199, Egg Fried Rice ₹149, Chilly Chicken ₹260, Chicken Manchurian ₹270, Garlic Chicken ₹270, Lemon Chicken ₹280
+Momos: Steamed ₹100, Fried ₹120
+Drinks: Pepsi/7Up/Dew ₹60, Lassi ₹80, Fresh Juice ₹120, Water ₹20
+Be warm, helpful, concise (2-4 sentences). Recommend dishes, help with ordering.`;
+let chatH=[];
+function cbAdd(txt,role){const d=document.createElement('div');d.className=`msg ${role}`;d.textContent=txt;document.getElementById('cbmsgs').appendChild(d);document.getElementById('cbmsgs').scrollTop=99999;}
+function cbTyp(){const d=document.createElement('div');d.className='msg bot typing';d.innerHTML='<div class="td"></div><div class="td"></div><div class="td"></div>';document.getElementById('cbmsgs').appendChild(d);document.getElementById('cbmsgs').scrollTop=99999;return d;}
+async function cbSend(q){
+  if(!q.trim())return;
+  cbAdd(q,'user');document.getElementById('cbsuggs').style.display='none';
+  chatH.push({role:'user',content:q});const t=cbTyp();
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:SYS,messages:chatH})});
+    const d=await r.json();
+    const rep=d.content?.[0]?.text||'Sorry! Call us at +91 99060 68811';
+    t.remove();cbAdd(rep,'bot');chatH.push({role:'assistant',content:rep});
+  }catch{t.remove();cbAdd('Having trouble. Call/WhatsApp: +91 99060 68811!','bot');}
+}
+let chatOpen=false,greeted=false;
+function toggleChat(open){
+  chatOpen=open!==undefined?open:!chatOpen;
+  document.getElementById('cbox').classList.toggle('on',chatOpen);
+  document.getElementById('cfab').classList.toggle('open',chatOpen);
+  if(chatOpen&&!greeted){greeted=true;setTimeout(()=>cbAdd('Assalamu Alaikum! Welcome to Chunk City — the City of Gold! I\'m ChunkBot. Ask me about our menu, prices, or how to order via WhatsApp.','bot'),350);}
+}
+document.getElementById('cfab').addEventListener('click',()=>toggleChat());
+document.getElementById('cbclose').addEventListener('click',()=>toggleChat(false));
+document.getElementById('cbsend').addEventListener('click',()=>{const i=document.getElementById('cbinp');cbSend(i.value);i.value='';});
+document.getElementById('cbinp').addEventListener('keydown',e=>{if(e.key==='Enter'){const i=document.getElementById('cbinp');cbSend(i.value);i.value='';}});
+document.querySelectorAll('.sugg').forEach(b=>b.addEventListener('click',()=>cbSend(b.dataset.q)));
+
+// ══════════════════ NAV ══════════════════
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>60));
+document.getElementById('ham').addEventListener('click',function(){this.classList.toggle('open');document.getElementById('navLinks').classList.toggle('open');});
+document.querySelectorAll('#navLinks a').forEach(a=>a.addEventListener('click',()=>{document.getElementById('navLinks').classList.remove('open');document.getElementById('ham').classList.remove('open');}));
+
+// ══════════════════ REVEAL ══════════════════
+function initReveal(){
+  const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');io.unobserve(e.target);}}),{threshold:.08});
+  document.querySelectorAll('.rev,.revl,.revr').forEach(el=>io.observe(el));
+}
+initReveal();
+
+// ══════════════════ COUNT UP ══════════════════
+function countUp(){document.querySelectorAll('[data-count]').forEach(el=>{const t=+el.dataset.count;let c=0;const step=Math.ceil(t/50);const tm=setInterval(()=>{c=Math.min(c+step,t);el.textContent=c+'+';if(c>=t)clearInterval(tm);},40);});}
+
+// ══════════════════ TOAST ══════════════════
+function showToast(msg){document.getElementById('toastMsg').textContent=msg;const t=document.getElementById('toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
+
+// ══════════════════ CANVAS PARTICLES ══════════════════
+(function(){
+  const canvas=document.getElementById('cvs'),ctx=canvas.getContext('2d');
+  let W,H,pts=[];
+  function resize(){W=canvas.width=canvas.offsetWidth;H=canvas.height=canvas.offsetHeight;}
+  function init(){resize();pts=[];for(let i=0;i<18;i++){pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.28,vy:(Math.random()-.5)*.28,r:Math.random()*1.4+.4,a:Math.random()});}}
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(200,149,26,${p.a*.35})`;ctx.fill();});
+    pts.forEach((a,i)=>pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<110){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(200,149,26,${.07*(1-d/110)})`;ctx.lineWidth=.5;ctx.stroke();}}));
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',init);init();draw();
+})();
+
+// ══════════════════ PRELOADER ══════════════════
+window.addEventListener('load',()=>{
+  setTimeout(()=>{document.getElementById('pre').classList.add('done');countUp();},700);
+});
+</script>
+</body>
+</html>
