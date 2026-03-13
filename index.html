@@ -24,12 +24,13 @@ button,input,textarea,select{font-family:inherit}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg2)}::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px}
 
 /* PRELOADER */
-#pre{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;transition:opacity .7s .3s,visibility .7s .3s}
+#pre{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;transition:opacity .7s .3s,visibility .7s .3s}
 #pre.done{opacity:0;visibility:hidden}
-.pre-ring{width:70px;height:70px;border-radius:50%;border:2px solid var(--border);border-top:2px solid var(--gold2);animation:spin 1s linear infinite}
+.pre-logo-wrap{position:relative;width:110px;height:110px;display:flex;align-items:center;justify-content:center}
+.pre-logo{width:70px;height:70px;object-fit:contain;filter:invert(1) sepia(1) saturate(3) hue-rotate(5deg) brightness(1.1)}
+.pre-ring{position:absolute;inset:0;border-radius:50%;border:2px solid var(--border);border-top:2px solid var(--gold2);animation:spin 1s linear infinite}
+.pre-ring2{position:absolute;inset:8px;border-radius:50%;border:2px solid var(--border2);border-bottom:2px solid var(--gold);animation:spin 1.5s linear infinite reverse}
 @keyframes spin{to{transform:rotate(360deg)}}
-.pre-ring::after{content:'';position:absolute;inset:8px;border-radius:50%;border:2px solid var(--border2);border-bottom:2px solid var(--gold);animation:spin 1.5s linear infinite reverse;position:relative;display:block}
-.pre-t{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:8px;color:var(--gold2)}
 .pre-s{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--muted)}
 .pre-bar{width:160px;height:2px;background:var(--bg3);border-radius:1px;overflow:hidden}
 .pre-fill{height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--gold2));animation:pfill .8s cubic-bezier(.4,0,.2,1) forwards}
@@ -40,7 +41,7 @@ nav{position:fixed;inset:0 0 auto 0;z-index:800;height:66px;display:flex;align-i
 nav.scrolled{background:rgba(6,6,8,.93);backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
 .nav-logo{display:flex;align-items:center;gap:11px;text-decoration:none}
 .li-logo{width:44px;height:44px;object-fit:contain;flex-shrink:0;filter:invert(1) sepia(1) saturate(3) hue-rotate(5deg) brightness(1.1);/* makes black logo → gold */}
-.ln{font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:3px;line-height:1.1}
+.ln{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;letter-spacing:3px;line-height:1.1;color:var(--cream)}
 .lc{display:block;font-size:9px;letter-spacing:4px;color:var(--gold2);font-family:'DM Sans',sans-serif;font-weight:600}
 .nav-links{display:flex;align-items:center;list-style:none;gap:28px}
 .nav-links a{text-decoration:none;color:var(--muted);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;transition:color .3s;position:relative}
@@ -312,8 +313,11 @@ select.of option{background:var(--bg3)}
 
 <!-- PRELOADER -->
 <div id="pre">
-  <div class="pre-ring"></div>
-  <div class="pre-t">CHUNK CITY</div>
+  <div class="pre-logo-wrap">
+    <div class="pre-ring"></div>
+    <div class="pre-ring2"></div>
+    <img class="pre-logo" src="logo.png" alt="Chunk City"/>
+  </div>
   <div class="pre-s">Ganderbal · Est. 2022</div>
   <div class="pre-bar"><div class="pre-fill"></div></div>
 </div>
