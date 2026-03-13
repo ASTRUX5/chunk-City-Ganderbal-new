@@ -44,7 +44,7 @@ const MENU_IMAGES = {
   // ── PIZZA NON-VEG ───────────────────────────────
   'Roast Chicken Pizza':          'https://images.pexels.com/photos/31587565/pexels-photo-31587565.jpeg?w=500',
   'Chicken Blast Pizza':          'https://images.pexels.com/photos/1653877/pexels-photo-1653877.jpeg?w=500',
-  'Chicken Tikka Pizza':          'https://images.pexels.com/photos/20187070/pexels-photo-20187070.jpeg?w=500',
+  'Chicken Tikka Pizza':          'https://images.pexels.com/photos/11485225/pexels-photo-11485225.jpeg?w=500',
   'Chicken Salami Pizza':         'https://images.unsplash.com/photo-1628840042765-356cda07504e?w=500&q=80',
   'Chicken Lovers':               'https://images.pexels.com/photos/2338015/pexels-photo-2338015.jpeg?w=500',
   'Chicken Peri Peri Pizza':      'https://images.pexels.com/photos/1653877/pexels-photo-1653877.jpeg?w=500',
