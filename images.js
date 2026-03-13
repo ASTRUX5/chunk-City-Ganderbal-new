@@ -54,7 +54,7 @@ const MENU_IMAGES = {
   'Chicken Kabab Pizza':          'https://images.pexels.com/photos/31587882/pexels-photo-31587882.jpeg?w=500',
   'Mutton Kabab Pizza':           'https://images.unsplash.com/photo-1544025162-d76694265947?w=500&q=80',
   'Mexican Bite':                 'https://images.pexels.com/photos/1653877/pexels-photo-1653877.jpeg?w=500',
-  'Chunk City Special Pizza':     'https://images.pexels.com/photos/2338015/pexels-photo-2338015.jpeg?w=500',
+  'Chunk City Special Pizza':     'https://images.pexels.com/photos/35760006/pexels-photo-35760006.jpeg?w=500',
 
   // ── WRAPS ───────────────────────────────────────
   'Chicken Tikka Wrap':       'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=500&q=80',
