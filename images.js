@@ -140,7 +140,7 @@ const MENU_IMAGES = {
   // ── SIDES / NAAN / ROTI ─────────────────────────
   'French Fries':         'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&q=80',
   'Peri Peri Fries':      'https://images.pexels.com/photos/1583884/pexels-photo-1583884.jpeg?w=500',
-  'Garlic Bread + Cheese':'https://images.unsplash.com/photo-1573140247632-f8fd74997d5c?w=500&q=80',
+  'Garlic Bread + Cheese':'https://images.pexels.com/photos/13062441/pexels-photo-13062441.jpeg?w=500',
   'Green Salad':          'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&q=80',
   'Finger Salad':         'https://images.pexels.com/photos/34261421/pexels-photo-34261421.jpeg?w=500',
   'Plain Naan':           'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&q=80',
