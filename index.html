@@ -33,7 +33,7 @@ button,input,textarea,select{font-family:inherit}
 @keyframes spin{to{transform:rotate(360deg)}}
 .pre-s{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--muted)}
 .pre-bar{width:160px;height:2px;background:var(--bg3);border-radius:1px;overflow:hidden}
-.pre-fill{height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--gold2));animation:pfill .8s cubic-bezier(.4,0,.2,1) forwards}
+.pre-fill{height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--gold2));animation:pfill 2.5s cubic-bezier(.4,0,.2,1) forwards}
 @keyframes pfill{to{width:100%}}
 
 /* NAV */
@@ -346,7 +346,7 @@ select.of option{background:var(--bg3)}
   <div class="pre-logo-wrap">
     <div class="pre-ring"></div>
     <div class="pre-ring2"></div>
-    <img class="pre-logo" src="logo.png" alt="Chunk City"/>
+    <img class="pre-logo" src="logo.png" alt="Chunk City" onerror="this.style.display='none'"/>
   </div>
   <div class="pre-s">Ganderbal · Est. 2022</div>
   <div class="pre-bar"><div class="pre-fill"></div></div>
@@ -358,7 +358,7 @@ select.of option{background:var(--bg3)}
 <!-- NAV -->
 <nav id="nav">
   <a class="nav-logo" href="#">
-    <img class="li-logo" src="logo.png" alt="Chunk City Logo"/>
+    <img class="li-logo" src="logo.png" alt="Chunk City Logo" onerror="this.style.display='none'"/>
     <div><span class="ln">Chunk City</span></div>
   </a>
   <ul class="nav-links" id="navLinks">
@@ -1087,46 +1087,6 @@ vp.addEventListener('touchend',()=>{if(dr){if(dd<-40)nextRv();else if(dd>40)prev
 vp.addEventListener('mouseleave',()=>{ds=null;dr=false;dd=0;});
 renderRv();resetAuto();
 
-// ══════════════════ CHATBOT ══════════════════
-const SYS=`You are ChunkBot, the friendly AI assistant for Chunk City Restaurant in Ganderbal, Jammu & Kashmir, India.
-RESTAURANT: Name: Chunk City | Location: Heart of Ganderbal, J&K 191201 | Phone/WhatsApp: +91 99060 68811 | Hours: 11 AM – 11 PM daily | Rating: 4.5/5 · 334+ Google reviews | Tagline: "The City of Gold"
-MENU:
-Sides: French Fries ₹120, Peri Peri Fries ₹140, Garlic Bread+Cheese ₹150
-KFC Style: Chicken Stripes ₹220, Nuggets ₹220, Popcorn ₹180, Lollipop ₹180, Chunk City Special ₹299, Chicken Bucket ₹699
-Pasta: Chicken Alfredo ₹300, Veg Alfredo ₹150, Veg Arrabbiata ₹150, Chicken Arrabbiata ₹300
-Grill: Grilled Lamb Chops (4pc) ₹499
-Pulao: Uzbek Pulao ₹500, Kabuli Pulao ₹550
-Chinese: Veg Fried Rice ₹159, Zeera Fried Rice ₹140, Chicken Fried Rice ₹199, Egg Fried Rice ₹149, Chilly Chicken ₹260, Chicken Manchurian ₹270, Garlic Chicken ₹270, Lemon Chicken ₹280
-Momos: Steamed ₹100, Fried ₹120
-Drinks: Pepsi/7Up/Dew ₹60, Lassi ₹80, Fresh Juice ₹120, Water ₹20
-Be warm, helpful, concise (2-4 sentences). Recommend dishes, help with ordering.`;
-let chatH=[];
-function cbAdd(txt,role){const d=document.createElement('div');d.className=`msg ${role}`;d.textContent=txt;document.getElementById('cbmsgs').appendChild(d);document.getElementById('cbmsgs').scrollTop=99999;}
-function cbTyp(){const d=document.createElement('div');d.className='msg bot typing';d.innerHTML='<div class="td"></div><div class="td"></div><div class="td"></div>';document.getElementById('cbmsgs').appendChild(d);document.getElementById('cbmsgs').scrollTop=99999;return d;}
-async function cbSend(q){
-  if(!q.trim())return;
-  cbAdd(q,'user');document.getElementById('cbsuggs').style.display='none';
-  chatH.push({role:'user',content:q});const t=cbTyp();
-  try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:SYS,messages:chatH})});
-    const d=await r.json();
-    const rep=d.content?.[0]?.text||'Sorry! Call us at +91 99060 68811';
-    t.remove();cbAdd(rep,'bot');chatH.push({role:'assistant',content:rep});
-  }catch{t.remove();cbAdd('Having trouble. Call/WhatsApp: +91 99060 68811!','bot');}
-}
-let chatOpen=false,greeted=false;
-function toggleChat(open){
-  chatOpen=open!==undefined?open:!chatOpen;
-  document.getElementById('cbox').classList.toggle('on',chatOpen);
-  document.getElementById('cfab').classList.toggle('open',chatOpen);
-  if(chatOpen&&!greeted){greeted=true;setTimeout(()=>cbAdd('Assalamu Alaikum! Welcome to Chunk City — the City of Gold! I\'m ChunkBot. Ask me about our menu, prices, or how to order via WhatsApp.','bot'),350);}
-}
-document.getElementById('cfab').addEventListener('click',()=>toggleChat());
-document.getElementById('cbclose').addEventListener('click',()=>toggleChat(false));
-document.getElementById('cbsend').addEventListener('click',()=>{const i=document.getElementById('cbinp');cbSend(i.value);i.value='';});
-document.getElementById('cbinp').addEventListener('keydown',e=>{if(e.key==='Enter'){const i=document.getElementById('cbinp');cbSend(i.value);i.value='';}});
-document.querySelectorAll('.sugg').forEach(b=>b.addEventListener('click',()=>cbSend(b.dataset.q)));
-
 // ══════════════════ NAV ══════════════════
 window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>60));
 document.getElementById('ham').addEventListener('click',function(){this.classList.toggle('open');document.getElementById('navLinks').classList.toggle('open');});
@@ -1146,9 +1106,9 @@ function countUp(){document.querySelectorAll('[data-count]').forEach(el=>{const 
 function showToast(msg){document.getElementById('toastMsg').textContent=msg;const t=document.getElementById('toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
 
 // ══════════════════ PRELOADER ══════════════════
-window.addEventListener('load',()=>{
-  setTimeout(()=>{document.getElementById('pre').classList.add('done');countUp();},700);
-});
+function hidePre(){document.getElementById('pre').classList.add('done');countUp();}
+setTimeout(hidePre, 2800);
+window.addEventListener('load',()=>{setTimeout(hidePre,400);});
 </script>
 </body>
 </html>
