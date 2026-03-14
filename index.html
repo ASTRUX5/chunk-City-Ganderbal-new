@@ -307,6 +307,36 @@ select.of option{background:var(--bg3)}
 .flyer img{width:100%;height:100%;object-fit:cover}
 @keyframes cartBadgePop{0%{transform:scale(1)}40%{transform:scale(1.8)}70%{transform:scale(.85)}100%{transform:scale(1)}}
 .badge-pop{animation:cartBadgePop .4s cubic-bezier(.4,0,.2,1)}
+
+/* SIZE MODAL */
+.smbg{position:fixed;inset:0;z-index:1100;display:flex;align-items:flex-end;justify-content:center;opacity:0;visibility:hidden;transition:all .3s}
+.smbg.on{opacity:1;visibility:visible}
+.sm-ov{position:absolute;inset:0;background:rgba(0,0,0,.82);backdrop-filter:blur(8px)}
+.sm{position:relative;z-index:1;background:var(--bg2);border-radius:24px 24px 0 0;width:100%;max-width:500px;border:1px solid var(--border);border-bottom:none;transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);overflow:hidden;max-height:92dvh;display:flex;flex-direction:column}
+.smbg.on .sm{transform:translateY(0)}
+.sm-img{width:100%;height:170px;object-fit:cover;flex-shrink:0}
+.sm-body{padding:18px 20px 0;overflow-y:auto;flex:1}
+.sm-close{position:absolute;top:12px;right:12px;z-index:2;width:30px;height:30px;border-radius:50%;border:none;background:rgba(0,0,0,.55);color:#fff;cursor:pointer;font-size:13px;display:grid;place-items:center;backdrop-filter:blur(4px)}
+.sm-name{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:700;margin-bottom:3px}
+.sm-desc{font-size:11px;color:var(--muted);margin-bottom:14px;line-height:1.5}
+.sm-stitle{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold2);margin-bottom:9px}
+.sm-sizes{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.sm-sz{padding:9px 14px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--cream);cursor:pointer;transition:all .22s;text-align:center;min-width:64px}
+.sm-sz-label{font-size:10px;font-weight:700;letter-spacing:1px;display:block}
+.sm-sz-price{font-size:14px;font-family:'Bebas Neue',sans-serif;color:var(--gold2);display:block;margin-top:1px}
+.sm-sz.sel{background:rgba(200,149,26,.15);border-color:var(--gold2)}
+.sm-selected{display:flex;flex-direction:column;gap:7px;margin-bottom:6px}
+.sm-row{display:flex;align-items:center;justify-content:space-between;padding:9px 13px;background:var(--bg3);border-radius:10px;border:1px solid var(--border2)}
+.sm-row-info{font-size:12px;font-weight:600;display:flex;align-items:center;gap:7px}
+.sm-row-info b{font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--gold2);font-weight:400}
+.sm-qty{display:flex;align-items:center;gap:7px}
+.sm-qb{width:26px;height:26px;border-radius:7px;border:1px solid var(--border);background:transparent;color:var(--cream);cursor:pointer;font-size:10px;display:grid;place-items:center;transition:all .2s}
+.sm-qb:hover{border-color:var(--gold);color:var(--gold)}
+.sm-qn{font-size:13px;font-weight:700;min-width:18px;text-align:center}
+.sm-foot{padding:14px 20px 24px;flex-shrink:0}
+.sm-add{width:100%;background:linear-gradient(135deg,var(--gold),var(--gold2));border:none;border-radius:11px;padding:14px;color:#000;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .3s}
+.sm-add:hover{transform:scale(1.02);box-shadow:0 8px 24px rgba(200,149,26,.4)}
+.sm-add:disabled{opacity:.35;cursor:not-allowed;transform:none}
 </style>
 </head>
 <body>
@@ -584,29 +614,28 @@ select.of option{background:var(--bg3)}
   </div>
 </div>
 
-<!-- CHATBOT -->
-<button class="cfab" id="cfab"><i class="fa-solid fa-comments"></i><i class="fa-solid fa-times"></i></button>
-<div class="cbox" id="cbox">
-  <div class="cbh">
-    <div class="cbav"><i class="fa-solid fa-robot"></i></div>
-    <div class="cbinf"><h4>ChunkBot</h4><p>Online — Ask anything</p></div>
-    <button class="cbclose" id="cbclose"><i class="fa-solid fa-times"></i></button>
-  </div>
-  <div class="cbmsgs" id="cbmsgs"></div>
-  <div class="cbsuggs" id="cbsuggs">
-    <button class="sugg" data-q="What's your most popular dish?">Most popular?</button>
-    <button class="sugg" data-q="Show me the full menu with prices">Full menu</button>
-    <button class="sugg" data-q="How do I order on WhatsApp?">How to order?</button>
-    <button class="sugg" data-q="What are opening hours and location?">Hours & location</button>
-  </div>
-  <div class="cbin-row">
-    <input class="cbinp" id="cbinp" type="text" placeholder="Ask about food, prices, hours..."/>
-    <button class="cbsend" id="cbsend"><i class="fa-solid fa-paper-plane"></i></button>
+<!-- SIZE MODAL -->
+<div class="smbg" id="smbg">
+  <div class="sm-ov" onclick="closeSizeModal()"></div>
+  <div class="sm" id="sm">
+    <button class="sm-close" onclick="closeSizeModal()"><i class="fa-solid fa-times"></i></button>
+    <img class="sm-img" id="sm-img" src="" alt=""/>
+    <div class="sm-body">
+      <div class="sm-name" id="sm-name"></div>
+      <div class="sm-desc" id="sm-desc"></div>
+      <div class="sm-stitle">Choose Size</div>
+      <div class="sm-sizes" id="sm-sizes"></div>
+      <div class="sm-selected" id="sm-selected"></div>
+    </div>
+    <div class="sm-foot">
+      <button class="sm-add" id="sm-add" onclick="smAddToCart()" disabled>Select a size to add</button>
+    </div>
   </div>
 </div>
 
 <script>
 // ══════════════════ DATA ══════════════════
+const SIZE_LABELS={R:'Regular',M:'Medium',L:'Large',XL:'Extra Large',H:'Half',F:'Full',S:'Small'};
 const MENU=[
   // COMBOS
   {id:1,cat:'combos',name:'Solo Meal',desc:'Burger 1pc, Strips 4pc, Fries, Dips 2pc, 150ml cold drink',price:330,img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=500&q=80'},
@@ -620,32 +649,32 @@ const MENU=[
   {id:13,cat:'burgers',name:'Malai Tikka Burger',desc:'Creamy malai tikka in a toasted bun',price:140,img:'https://images.unsplash.com/photo-1550317138-10000687a72b?w=500&q=80'},
   {id:14,cat:'burgers',name:'Chicken Tikka Burger',desc:'Spiced tikka chicken with fresh toppings',price:140,img:'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&q=80'},
   // PIZZA VEG
-  {id:20,cat:'pizzaveg',name:'Plain Cheese',desc:'A generous blend of cheese',price:140,priceLabel:'from ₹140',img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
-  {id:21,cat:'pizzaveg',name:'Paneer Pizza',desc:'Paneer, veg & 3 types of cheese',price:180,priceLabel:'from ₹180',img:'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&q=80'},
-  {id:22,cat:'pizzaveg',name:'Veg Blast',desc:'3 types of hot veggies & blend of cheese',price:190,priceLabel:'from ₹190',img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
-  {id:23,cat:'pizzaveg',name:'Margherita',desc:'Basil, oregano mix & tomato slice',price:160,priceLabel:'from ₹160',img:'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&q=80'},
-  {id:24,cat:'pizzaveg',name:'Cheese & Corn',desc:'3 types of cheese & sweet corn',price:180,priceLabel:'from ₹180',img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
-  {id:25,cat:'pizzaveg',name:'Mix Veg Pizza',desc:'Onion, capsicum & mushroom',price:190,priceLabel:'from ₹190',img:'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&q=80'},
-  {id:26,cat:'pizzaveg',name:'Cheese Burst Pizza',desc:'Double cheese',price:200,priceLabel:'from ₹200',img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
-  {id:27,cat:'pizzaveg',name:'Knirvana Pizza',desc:'Three types of cheese with mushroom',price:180,priceLabel:'from ₹180',img:'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&q=80'},
-  {id:28,cat:'pizzaveg',name:'Dry Fruit Lovers (Veg)',desc:'Dry fruits, onion, capsicum, mushroom',price:260,priceLabel:'from ₹260',img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
-  {id:29,cat:'pizzaveg',name:'Country Feast Pizza',desc:'American corn, tomato, capsicum, oregano',price:210,priceLabel:'from ₹210',img:'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&q=80'},
-  {id:30,cat:'pizzaveg',name:'Premium Veg. Pizza',desc:'Baby corn, capsicum, tomato, onion, black olives & mushroom',price:240,priceLabel:'from ₹240',img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
-  {id:31,cat:'pizzaveg',name:'Chunk City Special (Veg)',desc:'Choice of any 5 veggies with 3 types of cheese',price:290,priceLabel:'from ₹290',img:'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&q=80'},
+  {id:20,cat:'pizzaveg',name:'Plain Cheese',desc:'A generous blend of cheese',price:140,sizes:{R:140,M:250,L:350,XL:450},img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
+  {id:21,cat:'pizzaveg',name:'Paneer Pizza',desc:'Paneer, veg & 3 types of cheese',price:180,sizes:{R:180,M:300,L:430,XL:510},img:'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&q=80'},
+  {id:22,cat:'pizzaveg',name:'Veg Blast',desc:'3 types of hot veggies & blend of cheese',price:190,sizes:{R:190,M:330,L:440,XL:570},img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
+  {id:23,cat:'pizzaveg',name:'Margherita',desc:'Basil, oregano mix & tomato slice',price:160,sizes:{R:160,M:270,L:370,XL:480},img:'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&q=80'},
+  {id:24,cat:'pizzaveg',name:'Cheese & Corn',desc:'3 types of cheese & sweet corn',price:180,sizes:{R:180,M:300,L:410,XL:500},img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
+  {id:25,cat:'pizzaveg',name:'Mix Veg Pizza',desc:'Onion, capsicum & mushroom',price:190,sizes:{R:190,M:340,L:450,XL:550},img:'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&q=80'},
+  {id:26,cat:'pizzaveg',name:'Cheese Burst Pizza',desc:'Double cheese',price:200,sizes:{R:200,M:360,L:500,XL:580},img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
+  {id:27,cat:'pizzaveg',name:'Knirvana Pizza',desc:'Three types of cheese with mushroom',price:180,sizes:{R:180,M:350,L:480,XL:570},img:'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&q=80'},
+  {id:28,cat:'pizzaveg',name:'Dry Fruit Lovers (Veg)',desc:'Dry fruits, onion, capsicum, mushroom',price:260,sizes:{R:260,M:480,L:600,XL:700},img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
+  {id:29,cat:'pizzaveg',name:'Country Feast Pizza',desc:'American corn, tomato, capsicum, oregano',price:210,sizes:{R:210,M:360,L:490,XL:600},img:'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&q=80'},
+  {id:30,cat:'pizzaveg',name:'Premium Veg. Pizza',desc:'Baby corn, capsicum, tomato, onion, black olives & mushroom',price:240,sizes:{R:240,M:450,L:580,XL:680},img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
+  {id:31,cat:'pizzaveg',name:'Chunk City Special (Veg)',desc:'Choice of any 5 veggies with 3 types of cheese',price:290,sizes:{R:290,M:460,L:580,XL:680},img:'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&q=80'},
   // PIZZA NON-VEG
-  {id:40,cat:'pizzanv',name:'Roast Chicken Pizza',desc:'Roasted chicken & cheese',price:180,priceLabel:'from ₹180',img:'https://images.unsplash.com/photo-1528137871618-79d2761e3fd5?w=500&q=80'},
-  {id:41,cat:'pizzanv',name:'Chicken Blast Pizza',desc:'Hot chicken & cheese',price:190,priceLabel:'from ₹190',img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
-  {id:42,cat:'pizzanv',name:'Chicken Tikka Pizza',desc:'Chicken tikka with coriander',price:199,priceLabel:'from ₹199',img:'https://images.unsplash.com/photo-1528137871618-79d2761e3fd5?w=500&q=80'},
-  {id:43,cat:'pizzanv',name:'Chicken Salami Pizza',desc:'Salami chicken & capsicum',price:199,priceLabel:'from ₹199',img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
-  {id:44,cat:'pizzanv',name:'Chicken Lovers',desc:'Hot chicken & chicken sausage',price:199,priceLabel:'from ₹199',img:'https://images.unsplash.com/photo-1528137871618-79d2761e3fd5?w=500&q=80'},
-  {id:45,cat:'pizzanv',name:'Chicken Peri Peri Pizza',desc:'Spicy chicken with 3 types of cheese',price:220,priceLabel:'from ₹220',img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
-  {id:46,cat:'pizzanv',name:'Butter Chicken Pizza',desc:'Chicken marinated with butter, cream & milk',price:230,priceLabel:'from ₹230',img:'https://images.unsplash.com/photo-1528137871618-79d2761e3fd5?w=500&q=80'},
-  {id:47,cat:'pizzanv',name:"Kid's Special Chicken Pizza",desc:'Chicken tikka, baby corn, onion & olives',price:220,priceLabel:'from ₹220',img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
-  {id:48,cat:'pizzanv',name:'Dry Fruit Lovers (Chicken)',desc:'Butter chicken with dry fruits',price:270,priceLabel:'from ₹270',img:'https://images.unsplash.com/photo-1528137871618-79d2761e3fd5?w=500&q=80'},
-  {id:49,cat:'pizzanv',name:'Chicken Kabab Pizza',desc:'Chicken kabab & chicken sausage',price:199,priceLabel:'from ₹199',img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
-  {id:50,cat:'pizzanv',name:'Mutton Kabab Pizza',desc:'Mutton kabab & chicken sausage',price:220,priceLabel:'from ₹220',img:'https://images.unsplash.com/photo-1528137871618-79d2761e3fd5?w=500&q=80'},
-  {id:51,cat:'pizzanv',name:'Mexican Bite',desc:'Hot chicken, salami, black olives, mushroom, capsicum',price:299,priceLabel:'from ₹299',img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
-  {id:52,cat:'pizzanv',name:'Chunk City Special Pizza',desc:'Hot chicken, mushroom, baby corn, black olives, tomato, capsicum & sausage',price:320,priceLabel:'from ₹320',img:'https://images.unsplash.com/photo-1528137871618-79d2761e3fd5?w=500&q=80'},
+  {id:40,cat:'pizzanv',name:'Roast Chicken Pizza',desc:'Roasted chicken & cheese',price:180,sizes:{R:180,M:320,L:460,XL:570},img:'https://images.unsplash.com/photo-1528137871618-79d2761e3fd5?w=500&q=80'},
+  {id:41,cat:'pizzanv',name:'Chicken Blast Pizza',desc:'Hot chicken & cheese',price:190,sizes:{R:190,M:340,L:470,XL:590},img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
+  {id:42,cat:'pizzanv',name:'Chicken Tikka Pizza',desc:'Chicken tikka with coriander',price:199,sizes:{R:199,M:350,L:500,XL:600},img:'https://images.unsplash.com/photo-1528137871618-79d2761e3fd5?w=500&q=80'},
+  {id:43,cat:'pizzanv',name:'Chicken Salami Pizza',desc:'Salami chicken & capsicum',price:199,sizes:{R:199,M:349,L:499,XL:599},img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
+  {id:44,cat:'pizzanv',name:'Chicken Lovers',desc:'Hot chicken & chicken sausage',price:199,sizes:{R:199,M:370,L:549,XL:649},img:'https://images.unsplash.com/photo-1528137871618-79d2761e3fd5?w=500&q=80'},
+  {id:45,cat:'pizzanv',name:'Chicken Peri Peri Pizza',desc:'Spicy chicken with 3 types of cheese',price:220,sizes:{R:220,M:400,L:520,XL:630},img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
+  {id:46,cat:'pizzanv',name:'Butter Chicken Pizza',desc:'Chicken marinated with butter, cream & milk',price:230,sizes:{R:230,M:449,L:570,XL:670},img:'https://images.unsplash.com/photo-1528137871618-79d2761e3fd5?w=500&q=80'},
+  {id:47,cat:'pizzanv',name:"Kid's Special Chicken Pizza",desc:'Chicken tikka, baby corn, onion & olives',price:220,sizes:{R:220,M:430,L:580,XL:680},img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
+  {id:48,cat:'pizzanv',name:'Dry Fruit Lovers (Chicken)',desc:'Butter chicken with dry fruits',price:270,sizes:{R:270,M:490,L:600,XL:700},img:'https://images.unsplash.com/photo-1528137871618-79d2761e3fd5?w=500&q=80'},
+  {id:49,cat:'pizzanv',name:'Chicken Kabab Pizza',desc:'Chicken kabab & chicken sausage',price:199,sizes:{R:199,M:360,L:520,XL:620},img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
+  {id:50,cat:'pizzanv',name:'Mutton Kabab Pizza',desc:'Mutton kabab & chicken sausage',price:220,sizes:{R:220,M:380,L:540,XL:640},img:'https://images.unsplash.com/photo-1528137871618-79d2761e3fd5?w=500&q=80'},
+  {id:51,cat:'pizzanv',name:'Mexican Bite',desc:'Hot chicken, salami, black olives, mushroom, capsicum',price:299,sizes:{R:299,M:490,L:599,XL:710},img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'},
+  {id:52,cat:'pizzanv',name:'Chunk City Special Pizza',desc:'Hot chicken, mushroom, baby corn, black olives, tomato, capsicum & sausage',price:320,sizes:{R:320,M:490,L:600,XL:750},img:'https://images.unsplash.com/photo-1528137871618-79d2761e3fd5?w=500&q=80'},
   // WRAPS
   {id:60,cat:'wraps',name:'Chicken Tikka Wrap',desc:'Tikka chicken wrapped in soft roti',price:180,img:'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=500&q=80'},
   {id:61,cat:'wraps',name:'Malai Tikka Wrap',desc:'Creamy malai tikka in a soft wrap',price:150,img:'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=500&q=80'},
@@ -657,40 +686,41 @@ const MENU=[
   {id:71,cat:'kfc',name:'Chicken Nuggets',desc:'Tender bite-sized nuggets, perfectly seasoned',price:220,img:'https://images.unsplash.com/photo-1562967914-608f82629710?w=500&q=80'},
   {id:72,cat:'kfc',name:'Chicken Popcorn',desc:'Bite-sized crispy popcorn chicken',price:180,img:'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=500&q=80'},
   {id:73,cat:'kfc',name:'Chicken Lollipop',desc:'Marinated lollipops, smoky and charred',price:180,img:'https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=500&q=80'},
-  {id:74,cat:'kfc',name:'Chunk City Special Chicken',desc:'Our legendary house-special chicken — the crown jewel',price:299,priceLabel:'from ₹299',img:'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=500&q=80'},
+  {id:74,cat:'kfc',name:'Chunk City Special Chicken',desc:'Our legendary house-special chicken',price:299,sizes:{H:299,F:499},img:'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=500&q=80'},
   {id:75,cat:'kfc',name:'Chicken Bucket',desc:'Family-size bucket of crispy fried chicken',price:699,img:'https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=500&q=80'},
   // TANDOORI
-  {id:80,cat:'tandoori',name:'Tandoori Chicken',desc:'Classic tandoor-roasted chicken, smoky & spiced',price:300,priceLabel:'from ₹300',img:'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=500&q=80'},
-  {id:81,cat:'tandoori',name:'Afghani Chicken',desc:'Rich creamy Afghani-style grilled chicken',price:300,priceLabel:'from ₹300',img:'https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=500&q=80'},
-  {id:82,cat:'tandoori',name:'Chicken Tikka',desc:'Tender tikka marinated in spiced yogurt',price:250,priceLabel:'from ₹250',img:'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=500&q=80'},
+  {id:80,cat:'tandoori',name:'Tandoori Chicken',desc:'Classic tandoor-roasted chicken, smoky & spiced',price:300,sizes:{H:300,F:580},img:'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=500&q=80'},
+  {id:81,cat:'tandoori',name:'Afghani Chicken',desc:'Rich creamy Afghani-style grilled chicken',price:300,sizes:{H:300,F:580},img:'https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=500&q=80'},
+  {id:82,cat:'tandoori',name:'Chicken Tikka',desc:'Tender tikka marinated in spiced yogurt',price:250,sizes:{H:250,F:480},img:'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=500&q=80'},
   {id:83,cat:'tandoori',name:'Tandoori Chicken (Whole)',desc:'Full tandoori chicken — pre-order required',price:700,img:'https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=500&q=80'},
   {id:84,cat:'tandoori',name:'Tandoori Raan',desc:'Slow-roasted whole leg — pre-order required',price:2999,img:'https://images.unsplash.com/photo-1544025162-d76694265947?w=500&q=80'},
   // INDIAN MAIN COURSE
-  {id:90,cat:'indian',name:'Veg. Biryani',desc:'Fragrant basmati rice with mixed vegetables',price:100,priceLabel:'from ₹100',img:'https://images.unsplash.com/photo-1603360946369-dc9bb6258143?w=500&q=80'},
-  {id:91,cat:'indian',name:'Hyderabadi Dum Biryani',desc:'Slow-cooked aromatic dum biryani',price:120,priceLabel:'from ₹120',img:'https://images.unsplash.com/photo-1596797038530-2c107229654b?w=500&q=80'},
-  {id:92,cat:'indian',name:'Muradabadi Dum Biryani',desc:'Traditional Muradabadi-style chicken biryani',price:110,priceLabel:'from ₹110',img:'https://images.unsplash.com/photo-1603360946369-dc9bb6258143?w=500&q=80'},
-  {id:93,cat:'indian',name:"Chunk City's Special Biryani",desc:'Our signature biryani — house secret recipe',price:160,priceLabel:'from ₹160',img:'https://images.unsplash.com/photo-1596797038530-2c107229654b?w=500&q=80'},
-  {id:94,cat:'indian',name:'Butter Chicken Boneless',desc:'Silky butter chicken in rich tomato-cream gravy',price:299,priceLabel:'from ₹299',img:'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=500&q=80'},
-  {id:95,cat:'indian',name:'Butter Chicken (With Bone)',desc:'Classic butter chicken with bone-in pieces',price:300,priceLabel:'from ₹300',img:'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=500&q=80'},
-  {id:96,cat:'indian',name:'Fried Chicken (Dry Fry)',desc:'Crispy dry-fried chicken with bold spices',price:250,priceLabel:'from ₹250',img:'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=500&q=80'},
-  {id:97,cat:'indian',name:'Fried Chicken (With Onion)',desc:'Golden fried chicken tossed with caramelised onions',price:260,priceLabel:'from ₹260',img:'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=500&q=80'},
-  {id:98,cat:'indian',name:'Chicken Kabab Kanti',desc:'Succulent chicken kabab kanti',price:200,priceLabel:'from ₹200',img:'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=500&q=80'},
-  {id:99,cat:'indian',name:'Mutton Kabab Kanti',desc:'Rich mutton kabab in spiced gravy',price:250,priceLabel:'from ₹250',img:'https://images.unsplash.com/photo-1544025162-d76694265947?w=500&q=80'},
-  {id:100,cat:'indian',name:'Kadayi Chicken (Boneless)',desc:'Bold kadayi masala with boneless chicken',price:280,priceLabel:'from ₹280',img:'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=500&q=80'},
-  {id:101,cat:'indian',name:'Chicken Curry',desc:'Rich aromatic home-style chicken curry',price:299,priceLabel:'from ₹299',img:'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=500&q=80'},
-  {id:102,cat:'indian',name:'Masala Chicken',desc:'Spiced masala chicken with onion gravy',price:300,priceLabel:'from ₹300',img:'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=500&q=80'},
-  {id:103,cat:'indian',name:'Chicken Mughlai',desc:'Royal Mughlai-style rich chicken',price:350,priceLabel:'from ₹350',img:'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=500&q=80'},
-  {id:104,cat:'indian',name:'Fish Kanti',desc:'Flavourful fish curry',price:280,priceLabel:'from ₹280',img:'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=500&q=80'},
-  {id:105,cat:'indian',name:'Fried Fish',desc:'Crispy golden fried fish',price:140,priceLabel:'from ₹140',img:'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=500&q=80'},
-  {id:106,cat:'indian',name:'Chicken Kanti',desc:'Tender chicken kanti, 8 or 16 pcs',price:250,priceLabel:'from ₹250',img:'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=500&q=80'},
-  {id:107,cat:'indian',name:'Special Kashmiri Pulao',desc:'Kabab, chicken, paneer & dry fruits',price:290,priceLabel:'from ₹290',img:'https://images.unsplash.com/photo-1596797038530-2c107229654b?w=500&q=80'},
+  {id:90,cat:'indian',name:'Veg. Biryani',desc:'Fragrant basmati rice with mixed vegetables',price:100,sizes:{H:100,F:180},img:'https://images.unsplash.com/photo-1603360946369-dc9bb6258143?w=500&q=80'},
+  {id:91,cat:'indian',name:'Hyderabadi Dum Biryani',desc:'Slow-cooked aromatic dum biryani',price:120,sizes:{H:120,F:210},img:'https://images.unsplash.com/photo-1596797038530-2c107229654b?w=500&q=80'},
+  {id:92,cat:'indian',name:'Muradabadi Dum Biryani',desc:'Traditional Muradabadi-style chicken biryani',price:110,sizes:{H:110,F:200},img:'https://images.unsplash.com/photo-1603360946369-dc9bb6258143?w=500&q=80'},
+  {id:93,cat:'indian',name:"Chunk City's Special Biryani",desc:'Our signature biryani — house secret recipe',price:160,sizes:{H:160,F:290},img:'https://images.unsplash.com/photo-1596797038530-2c107229654b?w=500&q=80'},
+  {id:94,cat:'indian',name:'Butter Chicken Boneless',desc:'Silky butter chicken in rich tomato-cream gravy',price:299,sizes:{H:299,F:580},img:'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=500&q=80'},
+  {id:95,cat:'indian',name:'Butter Chicken (With Bone)',desc:'Classic butter chicken with bone-in pieces',price:300,sizes:{H:300,F:580},img:'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=500&q=80'},
+  {id:96,cat:'indian',name:'Fried Chicken (Dry Fry)',desc:'Crispy dry-fried chicken with bold spices',price:250,sizes:{H:250,F:470},img:'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=500&q=80'},
+  {id:97,cat:'indian',name:'Fried Chicken (With Onion)',desc:'Golden fried chicken tossed with caramelised onions',price:260,sizes:{H:260,F:500},img:'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=500&q=80'},
+  {id:98,cat:'indian',name:'Chicken Kabab Kanti',desc:'Succulent chicken kabab kanti',price:200,sizes:{H:200,F:400},img:'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=500&q=80'},
+  {id:99,cat:'indian',name:'Mutton Kabab Kanti',desc:'Rich mutton kabab in spiced gravy',price:250,sizes:{H:250,F:490},img:'https://images.unsplash.com/photo-1544025162-d76694265947?w=500&q=80'},
+  {id:100,cat:'indian',name:'Kadayi Chicken (Boneless)',desc:'Bold kadayi masala with boneless chicken',price:280,sizes:{H:280,F:500},img:'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=500&q=80'},
+  {id:101,cat:'indian',name:'Kadayi Chicken With Bone',desc:'Kadayi masala with bone-in chicken',price:320,sizes:{H:320,F:610},img:'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=500&q=80'},
+  {id:102,cat:'indian',name:'Chicken Curry',desc:'Rich aromatic home-style chicken curry',price:299,sizes:{H:299,F:570},img:'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=500&q=80'},
+  {id:103,cat:'indian',name:'Masala Chicken',desc:'Spiced masala chicken with onion gravy',price:300,sizes:{H:300,F:590},img:'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=500&q=80'},
+  {id:104,cat:'indian',name:'Chicken Mughlai',desc:'Royal Mughlai-style rich chicken',price:350,sizes:{H:350,F:650},img:'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=500&q=80'},
+  {id:105,cat:'indian',name:'Fish Kanti',desc:'Flavourful fish curry',price:280,sizes:{H:280,F:550},img:'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=500&q=80'},
+  {id:106,cat:'indian',name:'Fried Fish',desc:'Crispy golden fried fish',price:140,sizes:{H:140,F:480},img:'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=500&q=80'},
+  {id:107,cat:'indian',name:'Chicken Kanti',desc:'Tender chicken kanti — Half 8 pcs, Full 16 pcs',price:250,sizes:{H:250,F:480},img:'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=500&q=80'},
+  {id:108,cat:'indian',name:'Special Kashmiri Pulao',desc:'Kabab, chicken, paneer & dry fruits',price:290,sizes:{H:290,F:570},img:'https://images.unsplash.com/photo-1596797038530-2c107229654b?w=500&q=80'},
   // VEG ITEMS
-  {id:110,cat:'veg',name:'Mattar Mushroom',desc:'Peas & mushroom in spiced gravy',price:200,priceLabel:'from ₹200',img:'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=500&q=80'},
-  {id:111,cat:'veg',name:'Mattar Paneer',desc:'Soft paneer & peas in tomato gravy',price:250,priceLabel:'from ₹250',img:'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=500&q=80'},
-  {id:112,cat:'veg',name:'Masala Paneer',desc:'Paneer cubes in spicy masala sauce',price:230,priceLabel:'from ₹230',img:'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=500&q=80'},
-  {id:113,cat:'veg',name:'Butter Paneer',desc:'Paneer in rich creamy butter sauce',price:250,priceLabel:'from ₹250',img:'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=500&q=80'},
-  {id:114,cat:'veg',name:'Kadayi Paneer',desc:'Paneer in bold kadayi masala',price:270,priceLabel:'from ₹270',img:'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=500&q=80'},
-  {id:115,cat:'veg',name:'Veg Biryani',desc:'Fragrant vegetable biryani',price:100,priceLabel:'from ₹100',img:'https://images.unsplash.com/photo-1603360946369-dc9bb6258143?w=500&q=80'},
+  {id:110,cat:'veg',name:'Mattar Mushroom',desc:'Peas & mushroom in spiced gravy',price:200,sizes:{H:200,F:380},img:'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=500&q=80'},
+  {id:111,cat:'veg',name:'Mattar Paneer',desc:'Soft paneer & peas in tomato gravy',price:250,sizes:{H:250,F:450},img:'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=500&q=80'},
+  {id:112,cat:'veg',name:'Masala Paneer',desc:'Paneer cubes in spicy masala sauce',price:230,sizes:{H:230,F:410},img:'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=500&q=80'},
+  {id:113,cat:'veg',name:'Butter Paneer',desc:'Paneer in rich creamy butter sauce',price:250,sizes:{H:250,F:480},img:'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=500&q=80'},
+  {id:114,cat:'veg',name:'Kadayi Paneer',desc:'Paneer in bold kadayi masala',price:270,sizes:{H:270,F:490},img:'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=500&q=80'},
+  {id:115,cat:'veg',name:'Veg Biryani',desc:'Fragrant vegetable biryani',price:100,sizes:{H:100,F:180},img:'https://images.unsplash.com/photo-1603360946369-dc9bb6258143?w=500&q=80'},
   {id:116,cat:'veg',name:'Veg Soup',desc:'Light and nourishing vegetable soup',price:80,img:'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=500&q=80'},
   {id:117,cat:'veg',name:'Veg Fried Rice',desc:'Wok-tossed rice with fresh vegetables',price:160,img:'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=500&q=80'},
   // CHINESE
@@ -728,7 +758,7 @@ const MENU=[
   {id:176,cat:'sides',name:'Butter Naan',desc:'Warm naan brushed with golden butter',price:65,img:'https://images.unsplash.com/photo-1568471173242-461f0a730452?w=500&q=80'},
   {id:177,cat:'sides',name:'Garlic Naan',desc:'Garlic-brushed crispy naan bread',price:60,img:'https://images.unsplash.com/photo-1568471173242-461f0a730452?w=500&q=80'},
   {id:178,cat:'sides',name:'Tandoori Roti',desc:'Wholesome tandoori roti',price:30,img:'https://images.unsplash.com/photo-1568471173242-461f0a730452?w=500&q=80'},
-  // DRINKS (Mocktails, Shakes, Hot Beverages)
+  // DRINKS
   {id:180,cat:'drinks',name:'Fresh Lime Mojito',desc:'Classic fresh lime with mint & soda',price:99,img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=80'},
   {id:181,cat:'drinks',name:'Green Apple Mojito',desc:'Refreshing green apple mojito',price:110,img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=80'},
   {id:182,cat:'drinks',name:'Classic Mint Mojito',desc:'Classic mojito with fresh mint',price:100,img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=80'},
@@ -764,25 +794,140 @@ const REVIEWS=[
   {name:'ZAHEER ABASS',time:'4 months ago',text:'Great food and cool atmosphere — delicious, fresh, satisfying. Beautiful restaurant with warm energy. Service was excellent. We\'ll definitely be regulars.',stars:5},
 ];
 
-// ══════════════════ CART + localStorage ══════════════════
+// ══════════════════ CART ══════════════════
 let cart=JSON.parse(localStorage.getItem('cc_cart')||'[]');
 function saveCart(){localStorage.setItem('cc_cart',JSON.stringify(cart));}
 function cartTotal(){return cart.reduce((s,i)=>s+i.price*i.qty,0);}
 function cartQty(){return cart.reduce((s,i)=>s+i.qty,0);}
+
 function addToCart(id){
   const item=MENU.find(m=>m.id===id);
-  const ex=cart.find(c=>c.id===id);
-  if(ex)ex.qty++;else cart.push({...item,qty:1});
+  if(item.sizes&&Object.keys(item.sizes).length>1){openSizeModal(item);return;}
+  // single price
+  const ex=cart.find(c=>c.cartKey===String(id));
+  if(ex)ex.qty++;else cart.push({...item,cartKey:String(id),qty:1});
   saveCart();updateCartUI();showToast(`${item.name} added`);
   const btn=document.querySelector(`.add[data-id="${id}"]`);
   if(btn){
     const card=btn.closest('.mc');
-    flyToCart(card, item.name);
+    flyToCart(card,item.name);
     btn.classList.add('done');btn.innerHTML='<i class="fa-solid fa-check"></i>';
     setTimeout(()=>{btn.classList.remove('done');btn.innerHTML='<i class="fa-solid fa-plus"></i>';},1200);
   }
 }
-// ══════════════════ FLY TO CART ══════════════════
+window.addToCart=addToCart;
+
+function changeQty(cartKey,d){
+  const idx=cart.findIndex(c=>c.cartKey===cartKey);if(idx<0)return;
+  cart[idx].qty+=d;if(cart[idx].qty<=0)cart.splice(idx,1);
+  saveCart();updateCartUI();
+}
+window.changeQty=changeQty;
+
+function updateCartUI(){
+  const qty=cartQty();
+  document.getElementById('cartCount').textContent=qty;
+  document.getElementById('cartTotal').textContent=`₹${cartTotal()}`;
+  const list=document.getElementById('clist');
+  const es=document.getElementById('es');
+  const foot=document.getElementById('dfoot');
+  if(!cart.length){list.style.display='none';es.style.display='flex';foot.style.display='none';}
+  else{
+    list.style.display='flex';es.style.display='none';foot.style.display='block';
+    list.innerHTML=cart.map(c=>`<div class="ci">
+      <img class="cit" src="${c.img}" alt="${c.name}" loading="lazy"/>
+      <div class="cid"><div class="cin">${c.name}</div><div class="cip">₹${c.price*c.qty}</div></div>
+      <div class="ciq">
+        <button class="qb" onclick="changeQty('${c.cartKey}',-1)"><i class="fa-solid fa-minus"></i></button>
+        <span class="qn">${c.qty}</span>
+        <button class="qb" onclick="changeQty('${c.cartKey}',1)"><i class="fa-solid fa-plus"></i></button>
+      </div>
+    </div>`).join('');
+  }
+}
+updateCartUI();
+
+// ══════════════════ SIZE MODAL ══════════════════
+let smItem=null,smSel={};
+
+function openSizeModal(item){
+  smItem=item;smSel={};
+  document.getElementById('sm-img').src=item.img;
+  document.getElementById('sm-name').textContent=item.name;
+  document.getElementById('sm-desc').textContent=item.desc;
+  renderSizeModal();
+  document.getElementById('smbg').classList.add('on');
+  document.body.style.overflow='hidden';
+}
+function closeSizeModal(){
+  document.getElementById('smbg').classList.remove('on');
+  document.body.style.overflow='';
+  smItem=null;smSel={};
+}
+window.closeSizeModal=closeSizeModal;
+
+function renderSizeModal(){
+  if(!smItem)return;
+  const keys=Object.keys(smItem.sizes);
+  document.getElementById('sm-sizes').innerHTML=keys.map(k=>`
+    <button class="sm-sz${smSel[k]?' sel':''}" onclick="smToggle('${k}')">
+      <span class="sm-sz-label">${SIZE_LABELS[k]||k}</span>
+      <span class="sm-sz-price">₹${smItem.sizes[k]}</span>
+    </button>`).join('');
+  const selKeys=Object.keys(smSel);
+  document.getElementById('sm-selected').innerHTML=selKeys.length?selKeys.map(k=>`
+    <div class="sm-row">
+      <div class="sm-row-info">${SIZE_LABELS[k]||k} <b>₹${smItem.sizes[k]}</b></div>
+      <div class="sm-qty">
+        <button class="sm-qb" onclick="smQty('${k}',-1)"><i class="fa-solid fa-minus"></i></button>
+        <span class="sm-qn">${smSel[k]}</span>
+        <button class="sm-qb" onclick="smQty('${k}',1)"><i class="fa-solid fa-plus"></i></button>
+      </div>
+    </div>`).join(''):'';
+  const addBtn=document.getElementById('sm-add');
+  const total=Object.entries(smSel).reduce((s,[k,q])=>s+smItem.sizes[k]*q,0);
+  if(selKeys.length){addBtn.disabled=false;addBtn.textContent=`Add to Cart  ·  ₹${total}`;}
+  else{addBtn.disabled=true;addBtn.textContent='Select a size to add';}
+}
+
+function smToggle(k){if(!smSel[k])smSel[k]=1;renderSizeModal();}
+function smQty(k,d){smSel[k]=(smSel[k]||0)+d;if(smSel[k]<=0)delete smSel[k];renderSizeModal();}
+window.smToggle=smToggle;window.smQty=smQty;
+
+function smAddToCart(){
+  const selKeys=Object.keys(smSel);
+  if(!selKeys.length||!smItem)return;
+  selKeys.forEach(k=>{
+    const cartKey=`${smItem.id}_${k}`;
+    const price=smItem.sizes[k];
+    const displayName=`${smItem.name} (${SIZE_LABELS[k]||k})`;
+    const ex=cart.find(c=>c.cartKey===cartKey);
+    if(ex)ex.qty+=smSel[k];
+    else cart.push({...smItem,cartKey,price,name:displayName,qty:smSel[k]});
+  });
+  saveCart();updateCartUI();
+  showToast(`${smItem.name} added`);
+  const smImgEl=document.getElementById('sm-img');
+  if(smImgEl){
+    const cr=document.getElementById('cartBtn').getBoundingClientRect();
+    const ir=smImgEl.getBoundingClientRect();
+    const startSize=70,endSize=22;
+    const flyer=document.createElement('div');
+    flyer.className='flyer';
+    flyer.style.cssText=`width:${startSize}px;height:${startSize}px;left:${ir.left+ir.width/2-startSize/2}px;top:${ir.top+ir.height/2-startSize/2}px;transition:none`;
+    const fi=document.createElement('img');fi.src=smImgEl.src;flyer.appendChild(fi);
+    document.body.appendChild(flyer);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      flyer.style.transition='left .6s cubic-bezier(.4,-.1,.6,1.2),top .6s cubic-bezier(.55,.05,.45,1.5),width .6s ease,height .6s ease,opacity .5s ease .1s';
+      flyer.style.left=cr.left+cr.width/2-endSize/2+'px';
+      flyer.style.top=cr.top+cr.height/2-endSize/2+'px';
+      flyer.style.width=endSize+'px';flyer.style.height=endSize+'px';flyer.style.opacity='0';
+    }));
+    setTimeout(()=>{flyer.remove();const b=document.getElementById('cartCount');b.classList.remove('badge-pop');void b.offsetWidth;b.classList.add('badge-pop');setTimeout(()=>b.classList.remove('badge-pop'),400);},650);
+  }
+  closeSizeModal();
+}
+window.smAddToCart=smAddToCart;
 function flyToCart(cardEl, itemName) {
   const cardImg = cardEl.querySelector('.mc-img');
   const cartBtn = document.getElementById('cartBtn');
@@ -819,37 +964,7 @@ function flyToCart(cardEl, itemName) {
   }, 680);
 }
 
-window.addToCart=addToCart;
-function changeQty(id,d){
-  const idx=cart.findIndex(c=>c.id===id);if(idx<0)return;
-  cart[idx].qty+=d;if(cart[idx].qty<=0)cart.splice(idx,1);
-  saveCart();updateCartUI();
-}
-window.changeQty=changeQty;
-function updateCartUI(){
-  const qty=cartQty();
-  document.getElementById('cartCount').textContent=qty;
-  document.getElementById('cartTotal').textContent=`₹${cartTotal()}`;
-  const list=document.getElementById('clist');
-  const es=document.getElementById('es');
-  const foot=document.getElementById('dfoot');
-  if(!cart.length){list.style.display='none';es.style.display='flex';foot.style.display='none';}
-  else{
-    list.style.display='flex';es.style.display='none';foot.style.display='block';
-    list.innerHTML=cart.map(c=>`<div class="ci">
-      <img class="cit" src="${c.img}" alt="${c.name}" loading="lazy"/>
-      <div class="cid"><div class="cin">${c.name}</div><div class="cip">₹${c.price*c.qty}</div></div>
-      <div class="ciq">
-        <button class="qb" onclick="changeQty(${c.id},-1)"><i class="fa-solid fa-minus"></i></button>
-        <span class="qn">${c.qty}</span>
-        <button class="qb" onclick="changeQty(${c.id},1)"><i class="fa-solid fa-plus"></i></button>
-      </div>
-    </div>`).join('');
-  }
-}
-updateCartUI();
-
-// WA Order
+// ══════════════════ FLY TO CART ══════════════════
 document.getElementById('waBtn').addEventListener('click',()=>{
   if(!cart.length)return;
   const name=document.getElementById('oName').value.trim();
@@ -914,7 +1029,7 @@ function renderMenu(cat='all'){
       <div class="mc-body">
         <div class="mc-name">${m.name}</div>
         <div class="mc-desc">${m.desc}</div>
-        <div class="mc-foot"><div class="mc-price">${m.priceLabel||('₹'+m.price)}</div><button class="add" data-id="${m.id}" onclick="addToCart(${m.id})"><i class="fa-solid fa-plus"></i></button></div>
+        <div class="mc-foot"><div class="mc-price">₹${m.price}</div><button class="add" data-id="${m.id}" onclick="addToCart(${m.id})"><i class="fa-solid fa-plus"></i></button></div>
       </div>
     </div>`).join('');
   setTimeout(initReveal,30);
