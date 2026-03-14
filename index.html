@@ -127,7 +127,23 @@ nav.scrolled{background:rgba(6,6,8,.93);backdrop-filter:blur(24px);border-bottom
 .add:hover{transform:scale(1.1);box-shadow:0 5px 18px rgba(200,149,26,.4)}
 .add.done{background:linear-gradient(135deg,#1a7a4a,#22c870);color:#fff}
 
-/* REVIEWS */
+/* SEARCH BAR */
+.srchwrap{position:relative;margin-bottom:28px}
+.srch{width:100%;background:var(--bg3);border:1.5px solid var(--border);border-radius:14px;padding:14px 48px 14px 48px;color:var(--cream);font-size:14px;outline:none;transition:border-color .3s,box-shadow .3s;font-family:'DM Sans',sans-serif}
+.srch:focus{border-color:var(--gold2);box-shadow:0 0 0 3px rgba(200,149,26,.12)}
+.srch::placeholder{color:var(--muted)}
+.srch-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:15px;pointer-events:none;transition:color .3s}
+.srchwrap:focus-within .srch-icon{color:var(--gold2)}
+.srch-clear{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:rgba(200,149,26,.15);border:none;color:var(--gold2);width:26px;height:26px;border-radius:7px;cursor:pointer;font-size:11px;display:none;place-items:center;transition:all .2s}
+.srch-clear:hover{background:rgba(200,149,26,.3)}
+.srch-clear.vis{display:grid}
+.srch-meta{font-size:11px;color:var(--muted);margin-bottom:18px;min-height:16px;display:flex;align-items:center;gap:8px}
+.srch-meta b{color:var(--gold2);font-weight:700}
+.srch-meta .srch-tag{background:rgba(200,149,26,.1);border:1px solid var(--border);border-radius:20px;padding:2px 10px;font-size:10px;font-weight:600;color:var(--gold2)}
+.srch-none{text-align:center;padding:60px 20px;color:var(--muted)}
+.srch-none i{font-size:36px;opacity:.2;display:block;margin-bottom:12px}
+.srch-none p{font-size:14px}
+.srch-none span{color:var(--gold2)}
 .rwrap{background:var(--bg);padding:90px 0 80px;overflow:hidden}
 .rinner{max-width:1300px;margin:0 auto;padding:0 28px}
 .rhead{text-align:center;margin-bottom:48px}
@@ -413,6 +429,12 @@ select.of option{background:var(--bg3)}
       <h2 class="h2">Crafted with <em>Passion</em></h2>
       <p class="lead" style="margin:0 auto">Every dish prepared fresh daily — from street-food thrill to royal warmth. Pick your craving.</p>
     </div>
+    <div class="srchwrap rev">
+      <i class="fa-solid fa-magnifying-glass srch-icon"></i>
+      <input class="srch" id="srch" type="text" placeholder="Search dishes, e.g. chicken pizza, biryani, momos…" autocomplete="off" spellcheck="false"/>
+      <button class="srch-clear" id="srchClear" title="Clear"><i class="fa-solid fa-times"></i></button>
+    </div>
+    <div class="srch-meta" id="srchMeta"></div>
     <div class="cats rev d1" id="cats">
       <button class="cat on" data-cat="all"><i class="fa-solid fa-grid-2"></i> All</button>
       <button class="cat" data-cat="combos"><i class="fa-solid fa-layer-group"></i> Combos</button>
@@ -1021,24 +1043,92 @@ function submitModal(e){
 window.submitModal=submitModal;
 
 // ══════════════════ RENDER MENU ══════════════════
-function renderMenu(cat='all'){
-  const items=cat==='all'?MENU:MENU.filter(m=>m.cat===cat);
+let activeCat='all', searchQ='';
+
+function highlight(text, q){
+  if(!q) return text;
+  const re=new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`,'gi');
+  return text.replace(re,'<mark style="background:rgba(200,149,26,.35);color:var(--cream);border-radius:3px;padding:0 2px">$1</mark>');
+}
+
+function fuzzyMatch(item, q){
+  const s=(item.name+' '+item.desc+' '+item.cat).toLowerCase();
+  const words=q.toLowerCase().trim().split(/\s+/);
+  return words.every(w=>s.includes(w));
+}
+
+function renderMenu(cat='all', q=''){
+  activeCat=cat; searchQ=q;
+  let items = cat==='all' ? MENU : MENU.filter(m=>m.cat===cat);
+  if(q.trim()) items = items.filter(m=>fuzzyMatch(m,q));
+
+  const meta = document.getElementById('srchMeta');
+  if(q.trim()){
+    meta.innerHTML = items.length
+      ? `<span>Found <b>${items.length}</b> dish${items.length!==1?'es':''} for <span class="srch-tag">${q}</span></span>`
+      : '';
+  } else { meta.innerHTML=''; }
+
+  if(!items.length){
+    document.getElementById('mgrid').innerHTML=`
+      <div class="srch-none" style="grid-column:1/-1">
+        <i class="fa-solid fa-bowl-food"></i>
+        <p>No dishes found for <span>"${q}"</span></p>
+        <p style="font-size:12px;margin-top:6px;color:var(--muted)">Try "chicken", "pizza", "biryani"…</p>
+      </div>`;
+    return;
+  }
+
   document.getElementById('mgrid').innerHTML=items.map((m,i)=>`
-    <div class="mc" style="animation:cardIn .35s ease ${(i%8)*.04}s both">
+    <div class="mc" style="animation:cardIn .3s ease ${(i%8)*.04}s both">
       <div class="mc-iw"><img class="mc-img" src="${m.img}" alt="${m.name}" loading="lazy" decoding="async"/><div class="mc-tag">${m.cat.toUpperCase()}</div></div>
       <div class="mc-body">
-        <div class="mc-name">${m.name}</div>
-        <div class="mc-desc">${m.desc}</div>
+        <div class="mc-name">${highlight(m.name,q)}</div>
+        <div class="mc-desc">${highlight(m.desc,q)}</div>
         <div class="mc-foot"><div class="mc-price">₹${m.price}</div><button class="add" data-id="${m.id}" onclick="addToCart(${m.id})"><i class="fa-solid fa-plus"></i></button></div>
       </div>
     </div>`).join('');
   setTimeout(initReveal,30);
 }
+
+// Category filter
 document.getElementById('cats').addEventListener('click',e=>{
   const btn=e.target.closest('.cat');if(!btn)return;
   document.querySelectorAll('.cat').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');renderMenu(btn.dataset.cat);
+  btn.classList.add('on');
+  // clear search when switching category
+  document.getElementById('srch').value='';
+  document.getElementById('srchClear').classList.remove('vis');
+  renderMenu(btn.dataset.cat,'');
 });
+
+// Search input
+let srchTimer;
+document.getElementById('srch').addEventListener('input',e=>{
+  const q=e.target.value;
+  document.getElementById('srchClear').classList.toggle('vis',q.length>0);
+  clearTimeout(srchTimer);
+  srchTimer=setTimeout(()=>{
+    // reset category to all when searching
+    if(q.trim()){
+      document.querySelectorAll('.cat').forEach(b=>b.classList.remove('on'));
+      document.querySelector('.cat[data-cat="all"]').classList.add('on');
+      renderMenu('all',q);
+    } else {
+      renderMenu(activeCat,'');
+    }
+  },180);
+});
+
+// Clear button
+document.getElementById('srchClear').addEventListener('click',()=>{
+  document.getElementById('srch').value='';
+  document.getElementById('srchClear').classList.remove('vis');
+  document.getElementById('srchMeta').innerHTML='';
+  renderMenu(activeCat,'');
+  document.getElementById('srch').focus();
+});
+
 renderMenu();
 
 // ══════════════════ REVIEWS ══════════════════
