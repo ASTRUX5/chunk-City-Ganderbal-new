@@ -281,7 +281,17 @@ select.of option{background:var(--bg3)}
 .wabtn:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(37,211,102,.38)}
 .wabtn i{font-size:17px}
 
-/* BOOK TABLE MODAL */
+/* PAYMENT METHOD */
+.pay-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.pay-opt{display:flex;align-items:center;gap:9px;padding:10px 12px;border-radius:10px;border:1.5px solid var(--border2);background:var(--bg4);cursor:pointer;transition:all .25s;position:relative}
+.pay-opt:hover{border-color:rgba(200,149,26,.3);background:rgba(200,149,26,.05)}
+.pay-opt.sel{border-color:var(--gold2);background:rgba(200,149,26,.1);box-shadow:0 0 0 2px rgba(200,149,26,.12)}
+.pay-opt input{position:absolute;opacity:0;width:0;height:0}
+.pay-logo{width:28px;height:28px;object-fit:contain;flex-shrink:0}
+.pay-ico{width:28px;height:28px;border-radius:7px;display:grid;place-items:center;font-size:15px;flex-shrink:0}
+.pay-lbl{font-size:11px;font-weight:700;letter-spacing:.5px;line-height:1.2}
+.pay-dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--border);margin-left:auto;flex-shrink:0;transition:all .2s}
+.pay-opt.sel .pay-dot{border-color:var(--gold2);background:var(--gold2)}
 .modal-bg{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:18px;opacity:0;visibility:hidden;transition:all .35s}
 .modal-bg.on{opacity:1;visibility:visible}
 .mbg{position:absolute;inset:0;background:rgba(0,0,0,.82);backdrop-filter:blur(10px)}
@@ -612,6 +622,35 @@ select.of option{background:var(--bg3)}
     <div class="osect">
       <div class="ostitle"><i class="fa-solid fa-note-sticky" style="font-size:9px"></i> Order Note</div>
       <textarea class="of" id="oNote" rows="2" style="width:100%;height:56px;resize:none;margin-bottom:11px" placeholder="Extra spicy? No onions? Delivery instructions..."></textarea>
+    </div>
+    <div class="osect">
+      <div class="ostitle"><i class="fa-solid fa-credit-card" style="font-size:9px"></i> Payment Method</div>
+      <div class="pay-grid" id="payGrid">
+        <label class="pay-opt sel" data-pay="Cash on Delivery">
+          <input type="radio" name="pay" value="Cash on Delivery" checked/>
+          <div class="pay-ico" style="background:rgba(34,200,112,.15);color:#22c870"><i class="fa-solid fa-money-bill-wave"></i></div>
+          <span class="pay-lbl">Cash on<br>Delivery</span>
+          <span class="pay-dot"></span>
+        </label>
+        <label class="pay-opt" data-pay="UPI">
+          <input type="radio" name="pay" value="UPI"/>
+          <img class="pay-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/240px-UPI-Logo-vector.svg.png" alt="UPI" onerror="this.style.display='none'"/>
+          <span class="pay-lbl">UPI</span>
+          <span class="pay-dot"></span>
+        </label>
+        <label class="pay-opt" data-pay="Google Pay">
+          <input type="radio" name="pay" value="Google Pay"/>
+          <img class="pay-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Google_Pay_Logo.svg/240px-Google_Pay_Logo.svg.png" alt="GPay" onerror="this.style.display='none'"/>
+          <span class="pay-lbl">Google Pay</span>
+          <span class="pay-dot"></span>
+        </label>
+        <label class="pay-opt" data-pay="Bank Transfer">
+          <input type="radio" name="pay" value="Bank Transfer"/>
+          <div class="pay-ico" style="background:rgba(200,149,26,.15);color:var(--gold2)"><i class="fa-solid fa-building-columns"></i></div>
+          <span class="pay-lbl">Bank<br>Transfer</span>
+          <span class="pay-dot"></span>
+        </label>
+      </div>
     </div>
     <div class="ctrow"><span class="ctlbl">Total</span><span class="ctamt" id="cartTotal">₹0</span></div>
     <button class="wabtn" id="waBtn"><i class="fa-brands fa-whatsapp"></i> Place Order via WhatsApp</button>
@@ -987,6 +1026,18 @@ function flyToCart(cardEl, itemName) {
 }
 
 // ══════════════════ FLY TO CART ══════════════════
+// Payment method selection
+document.getElementById('payGrid').addEventListener('click',e=>{
+  const opt=e.target.closest('.pay-opt');if(!opt)return;
+  document.querySelectorAll('.pay-opt').forEach(o=>o.classList.remove('sel'));
+  opt.classList.add('sel');
+  opt.querySelector('input').checked=true;
+});
+function getPayMethod(){
+  const sel=document.querySelector('.pay-opt.sel');
+  return sel?sel.dataset.pay:'Cash on Delivery';
+}
+
 document.getElementById('waBtn').addEventListener('click',()=>{
   if(!cart.length)return;
   const name=document.getElementById('oName').value.trim();
@@ -995,11 +1046,19 @@ document.getElementById('waBtn').addEventListener('click',()=>{
   const pin=document.getElementById('oPin').value.trim();
   const time=document.getElementById('oTime').value;
   const note=document.getElementById('oNote').value.trim();
+  const pay=getPayMethod();
+  const payEmoji={
+    'Cash on Delivery':'💵',
+    'UPI':'📲',
+    'Google Pay':'🟢',
+    'Bank Transfer':'🏦'
+  }[pay]||'💳';
   let msg='🍽️ *NEW ORDER — Chunk City Ganderbal*\n━━━━━━━━━━━━━━━━━━\n';
   if(name)msg+=`👤 *Name:* ${name}\n`;
   if(phone)msg+=`📞 *Phone:* ${phone}\n`;
   if(addr)msg+=`📍 *Address:* ${addr}${pin?', '+pin:''}\n`;
   if(time)msg+=`⏰ *Preferred Time:* ${time}\n`;
+  msg+=`${payEmoji} *Payment:* ${pay}\n`;
   msg+='━━━━━━━━━━━━━━━━━━\n*ORDER ITEMS:*\n';
   cart.forEach((item,i)=>{msg+=`${i+1}. ${item.name} × ${item.qty} = ₹${item.qty*item.price}\n`;});
   msg+=`━━━━━━━━━━━━━━━━━━\n💰 *TOTAL: ₹${cartTotal()}*\n`;
